@@ -12,7 +12,7 @@ func (d *Documents) GetDocuments(rw http.ResponseWriter, r *http.Request) {
 	d.l.Debug("Get all documents")
 	rw.Header().Add("Content-Type", "application/json")
 
-	stringPage := r.URL.Query().Get("currency")
+	stringPage := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(stringPage)
 	if err != nil {
 		d.l.Error("Page is not integer")

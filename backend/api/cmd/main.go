@@ -12,12 +12,14 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-hclog"
 	"github.com/izveigor/X-MAS-HACK/pkg/config"
+	"github.com/izveigor/X-MAS-HACK/pkg/db"
 	"github.com/izveigor/X-MAS-HACK/pkg/handlers/documents"
 )
 
 var bindAddress string = config.Config.Host + ":" + config.Config.Port
 
 func main() {
+	db.ConnectToMongo()
 	l := hclog.Default()
 
 	router := mux.NewRouter()
@@ -25,7 +27,7 @@ func main() {
 	documentsHandler := documents.NewDocuments(l)
 
 	getDocuments := router.Methods(http.MethodGet).Subrouter()
-	getDocuments.HandleFunc("/documents", documentsHandler.GetDocuments).Queries("page", "[0-9]")
+	getDocuments.HandleFunc("/documents", documentsHandler.GetDocuments)
 
 	cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
 
