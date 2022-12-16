@@ -13,9 +13,9 @@ const theme = {
 		  technical: '##7D7D7D',
 		  success: '#31B245',
 	  },
-	  animations: {
-		  animation: '0.3s ease-in-out',
-	  }
+	transition: {
+		transition: '0.2s ease-in-out',
+	}
 }
 
 export default theme;

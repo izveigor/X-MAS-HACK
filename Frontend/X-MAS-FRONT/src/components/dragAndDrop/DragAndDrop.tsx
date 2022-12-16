@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import RoundSelection from "../roundSelection/RoundSelection";
 import Button from "../ui/button/Button";
 
 
@@ -15,6 +16,13 @@ export const DragAndDrop = () => {
 		if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
 			setDrag(true);
 		}
+		//and make cursor change
+		e.dataTransfer.dropEffect = 'copy';
+		e.dataTransfer.effectAllowed = 'copy';
+	}
+
+	const isPdfOrDocOrDocx = (file: File) => {
+		return file.type === 'application/pdf' || file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 	}
 	const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
@@ -40,10 +48,13 @@ export const DragAndDrop = () => {
 	const handleFiles = (files: FileList) => {
 		for (let i = 0; i < files.length; i++) {
 			console.log(files[i]);
-			setFiles([...files]);
+			if (isPdfOrDocOrDocx(files[i])) {
+				setFiles([...files]);
+			}
 		}
 	}
 	const openFileDialog = () => {
+		//only pdf docx doc files and add to array
 		if (fileInputRef.current) {
 			fileInputRef.current.click();
 		}
@@ -55,28 +66,37 @@ export const DragAndDrop = () => {
 	}
 
 	return (
-		<DragAndDropZone>
-			<p>Перетащите сюда документы <br/>или</p>
-			<input onDrop={onDrop} onDragOver={onDragOver} onDragEnter={onDragEnter} onDragLeave={onDragLeave}
-			       ref={fileInputRef} type='file' multiple={true}
-			       style={{display: 'none', height: '100%', width: '100%'}} onChange={onChange}/>
-			<Button main={false} onClick={openFileDialog}>Выберите файл</Button>
-			{files.length > 0 && <p>Выбрано файлов: {files.length}</p>
-			}
-			{drag && <p>Перетащите файлы</p>}
-			{files.map((file, index) => <p key={index}>{file.name}</p>)}
-		</DragAndDropZone>
+		<>
+			<DragAndDropZone>
+				<p>Перетащите сюда документы <br/>или</p>
+				<DragAndDropInput onDrop={onDrop} onDragOver={onDragOver} onDragEnter={onDragEnter}
+				                  onDragLeave={onDragLeave}
+				                  ref={fileInputRef} type='file' multiple={true} onChange={onChange}/>
+				<Button main={false} onClick={openFileDialog}>Выберите файл</Button>
+			</DragAndDropZone>
+			<p>Только форматы pdf, doc, docx. До
+				5Мб</p>
+			<FileNamesContainer>
+				{files.map((file, index) => {
+					return <RoundSelection key={index} title={file.name} onClick={() => {
+						setFiles(files.filter((f) => f.name !== file.name));
+					}
+					}/>
+				})}
+			</FileNamesContainer>
+		</>
 	)
 }
 
 				export default DragAndDrop;
 
 const DragAndDropZone = styled.div`
-  		margin-top: 24px;
-	  width: 100%;
-  		gap: 10px;
-	  border: 3px dashed  #404040;
-  	color: ${props => props.theme.colors.technical};
+  position: relative;
+  margin-top: 24px;
+  width: 100%;
+  gap: 10px;
+  border: 3px dashed #404040;
+  color: ${props => props.theme.colors.technical};
   border-radius: 24px;
   height: 164px;
   display: flex;
@@ -90,4 +110,26 @@ const DragAndDropZone = styled.div`
     font-weight: 500;
     font-size: 14px;
   }
+`
+
+const DragAndDropInput = styled.input`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+`
+
+const FileNamesContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  gap: 8px;
 `

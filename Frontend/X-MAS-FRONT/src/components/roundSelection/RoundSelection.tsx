@@ -29,7 +29,7 @@ const Container = styled.div`
 
 const Title = styled.p`
   font-weight: 500;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 16px;
   color: ${(props) => props.theme.colors.accent};
 `
@@ -37,6 +37,7 @@ const Title = styled.p`
 const Icon = styled.img`
   width: 18px;
   height: 18px;
+  cursor: pointer;
 `
 
 
