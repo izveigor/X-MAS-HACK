@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import {AuthContext} from "../../providers/AuthProvider/AuthProvider";
 import cutFileName from "../../service/scripts/cutFileName";
 import RoundSelection from "../roundSelection/RoundSelection";
 import Button from "../ui/button/Button";
-import {AuthContext} from "../../providers/AuthProvider/AuthProvider";
 
-export const DragAndDrop = () => {
-	const {token, setToken} = React.useContext(AuthContext);
+interface IProps {
+	updateDocument: () => void;
+}
+
+export const DragAndDrop = (props: IProps) => {
+	const {updateDocument} = props;
+	const {token, logout} = React.useContext(AuthContext);
 	const [files, setFiles] = React.useState<File[]>([]);
 	const [drag, setDrag] = React.useState(false);
 	const [dragCounter, setDragCounter] = React.useState(0);
@@ -18,7 +23,7 @@ export const DragAndDrop = () => {
 	})
 
 	const sendFiles = () => {
-		fetch('http://localhost:9000/documents', {
+		fetch('/documents', {
 			method: 'POST',
 			headers: {
 				'Authorization': "Token " + token,
@@ -28,10 +33,9 @@ export const DragAndDrop = () => {
 		})
 			.then(response => response.json())
 			.then(data => console.log(data))
-			.catch(() => setToken(null))
+			.catch(logout)
+			.finally(() => updateDocument).then(() => setFiles([]))
 	}
-
-
 	const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -88,9 +92,8 @@ export const DragAndDrop = () => {
 		}
 	}
 
-	const handleSubmit = () =>
-	{
-
+	const handleSubmit = () => {
+		sendFiles();
 	}
 
 	return (
@@ -104,7 +107,7 @@ export const DragAndDrop = () => {
 					<Button main={false} onClick={openFileDialog}>Выберите файл</Button>
 				</DragAndDropZone><p>Только форматы pdf, doc, docx. До
 					5Мб</p></>
-					) : (
+			) : (
 				<><FileNamesContainer>
 					{files.map((file, index) => {
 						return <RoundSelection key={index} title={cutFileName(file.name)} onClick={() => {
@@ -117,7 +120,7 @@ export const DragAndDrop = () => {
 	);
 };
 
-				export default DragAndDrop;
+export default DragAndDrop;
 
 const DragAndDropZone = styled.div`
   position: relative;
@@ -164,5 +167,5 @@ const FileNamesContainer = styled.div`
 `
 
 const AnalyzeButton = styled(Button)`
-	  margin-top: 24px;
-	  `
+  margin-top: 24px;
+`

@@ -1,5 +1,6 @@
 import React from "react";
 import expend from '../../../../assets/images/expend.svg';
+import {ICard} from "../../../../service/interfaces/ICard";
 import cutFileName from "../../../../service/scripts/cutFileName";
 import normalizeDate from "../../../../service/scripts/normalizeDate";
 import Status from "../status/Status";
@@ -13,20 +14,12 @@ import {
 	ExpendIconWrapper
 } from "./style";
 
-interface ITableRowProps {
-	id: number;
-	name: string;
-	datetime: string;
-	status: string;
-	type: string[];
-	accuracy: string[];
-	isEven: boolean;
-}
 
-const TableRow = (props: ITableRowProps) => {
-	const {id, name, datetime, status, type, accuracy, isEven} = props;
+const TableRow = (props: ICard) => {
+	const {name, date, status, types, score, keyWords} = props;
 	const [isExpend, setIsExpend] = React.useState<boolean>(false);
 	const expendRef = React.useRef<HTMLImageElement>(null);
+	const maxAccuracy = Math.max(...score);
 	const expendHandler = () => {
 		//change expend state
 		setIsExpend((prev) => !prev);
@@ -45,14 +38,14 @@ const TableRow = (props: ITableRowProps) => {
 	return (
 		<TableLine>
 			<TableItem><InfoText>Название:</InfoText><p>{cutFileName(name)}</p></TableItem>
-			<TableItem><InfoText>Дата:</InfoText><p>{normalizeDate(datetime)}</p></TableItem>
+			<TableItem><InfoText>Дата:</InfoText><p>{normalizeDate(normalizeDate(date))}</p></TableItem>
 			<TableItem><InfoText>Статус:</InfoText><Status status={status}/></TableItem>
-			<TableItem><InfoText>Тип документа:</InfoText><p>{type[0]}</p></TableItem>
-			<TableItem><InfoText>Точность:</InfoText><p>{accuracy[0]}</p></TableItem>
+			<TableItem><InfoText>Тип документа:</InfoText><p>{types[0]}</p></TableItem>
+			<TableItem><InfoText>Точность:</InfoText><p>{maxAccuracy}</p></TableItem>
 			<ExpendIconWrapper onClick={expendHandler} ref={expendRef}>
 				<img src={expend} alt='expend'/>
 			</ExpendIconWrapper>
-			{isExpend && <ExpendContent>test</ExpendContent>}
+			{isExpend && <ExpendContent>{keyWords.map((item, index) => <p key={index}>{item}</p>)}</ExpendContent>}
 		</TableLine>
 	)
 }

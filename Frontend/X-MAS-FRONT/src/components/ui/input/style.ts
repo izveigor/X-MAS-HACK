@@ -35,5 +35,10 @@ const ErrorBlock = styled.div`
 	  height: 17px;
 	  `;
 
-export { InputWrapper, InputLabel, StyledInput, ErrorBlock };
+export {
+	InputWrapper,
+	InputLabel,
+	StyledInput,
+	ErrorBlock
+};
 
