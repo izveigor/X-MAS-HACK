@@ -4,8 +4,6 @@ import (
 	"context"
 	"sort"
 	"time"
-
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 type TypesScores struct {
@@ -16,10 +14,13 @@ type TypesScores struct {
 func sortTypes(document Document) ([]string, []float32) {
 	typesScoresArray := []TypesScores{}
 	for i := 0; i < len(document.Types); i++ {
-		typesScoresArray = append(typesScoresArray, TypesScores{})
+		typesScoresArray = append(typesScoresArray, TypesScores{
+			Type:  document.Types[i],
+			Score: document.Scores[i],
+		})
 	}
 	sort.Slice(typesScoresArray, func(i, j int) bool {
-		return typesScoresArray[i].Score < typesScoresArray[j].Score
+		return typesScoresArray[i].Score > typesScoresArray[j].Score
 	})
 
 	typesArray := []string{}
@@ -41,15 +42,15 @@ func InsertDocument(document Document) error {
 	defer cancel()
 
 	types, scores := sortTypes(document)
-	_, err := documentsCollection.InsertOne(ctx, bson.M{
-		"name":   document.Name,
-		"date":   time.Now(),
-		"status": document.Status,
-		"types":  types,
-		"scores": scores,
-	})
+	createdDocument := Document{
+		Name:   document.Name,
+		Date:   document.Date,
+		Status: document.Status,
+		Types:  types,
+		Scores: scores,
+	}
 
-	if err != nil {
+	if _, err := documentsCollection.InsertOne(ctx, createdDocument); err != nil {
 		return err
 	}
 
