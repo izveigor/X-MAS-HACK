@@ -3,13 +3,35 @@ import styled from "styled-components";
 import cutFileName from "../../service/scripts/cutFileName";
 import RoundSelection from "../roundSelection/RoundSelection";
 import Button from "../ui/button/Button";
-
+import {AuthContext} from "../../providers/AuthProvider/AuthProvider";
 
 export const DragAndDrop = () => {
+	const {token, setToken} = React.useContext(AuthContext);
 	const [files, setFiles] = React.useState<File[]>([]);
 	const [drag, setDrag] = React.useState(false);
 	const [dragCounter, setDragCounter] = React.useState(0);
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
+	//set files to formData
+	const formData = new FormData();
+	files.forEach((file) => {
+		formData.append('file', file);
+	})
+
+	const sendFiles = () => {
+		fetch('http://localhost:9000/documents', {
+			method: 'POST',
+			headers: {
+				'Authorization': "Token " + token,
+				'Content-Type': 'multipart/form-data',
+			},
+			body: formData
+		})
+			.then(response => response.json())
+			.then(data => console.log(data))
+			.catch(() => setToken(null))
+	}
+
+
 	const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
 		e.stopPropagation();

@@ -7,8 +7,18 @@ import {AuthContext} from "../../providers/AuthProvider/AuthProvider";
 import {TableLine} from "./table/style";
 import TableRow from "./table/TableRow/TableRow";
 
+export interface ICard {
+	keyWords: string[],
+	name: string,
+	date: string,
+	status: string,
+	types: string[],
+	score: Float32Array,
+}
+
+
 const MainPage = () => {
-	const {token, username, email} = React.useContext(AuthContext);
+	const {token, setToken, username, email} = React.useContext(AuthContext);
 	const test = {
 		id: Math.random(),
 		name: "afgeggrsg.docx",
@@ -17,6 +27,18 @@ const MainPage = () => {
 		type: ['Купля-продажа', 'Поставка', 'Договор аренды'],
 		accuracy: ['100%', '100%', '100%'],
 	}
+
+	fetch('http://localhost:9000/documents?page=1', {
+		method: "GET",
+		headers: {
+			'Authorization': "Token " + token,
+		}
+	}).then(response => response.json())
+		.then(data => setCards(data))
+		.catch(() => {setToken(null)});
+
+
+	const [cards, setCards] = React.useState<ICard[] | null>(null);
 	//if not logged in, redirect to login page
 	// useEffect(() => {
 	// 	if(!token) {

@@ -15,7 +15,7 @@ const FormWrapper = styled.div`
 
 const Form = styled.form`
   margin-top: 44px;
-  gap: 6px;
+  gap: 2px;
   	display: flex;
   	  flex-direction: column;
   	  align-items: center;

@@ -12,6 +12,26 @@ import AppWrapper from "./style";
 
 
 function App() {
+    interface Card {
+        keyWords: string[],
+        name: string,
+        date: string,
+        status: string,
+        types: string[],
+        score: Float32Array,
+    }
+    //localhost:9000/documents?page=1
+    //get fetch request
+    //localhost:9000/documents?page=2
+    const [cards, setCards] = React.useState<Card[] | null>(null);
+
+    fetch('http://localhost:9000/documents?page=1')
+        .then(response => response.json())
+        .then(data => setCards(data));
+
+
+
+
     return (
         <AppWrapper>
             <Header/>
