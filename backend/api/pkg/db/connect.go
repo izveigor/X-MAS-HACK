@@ -13,6 +13,7 @@ import (
 
 type Document struct {
 	// ID     primitive.ObjectID `bson:"_id"`
+	Uuid   string    `bson:"uuid"`
 	Name   string    `bson:"name"`
 	Date   time.Time `bson:"time"`
 	Status string    `bson:"status"`

@@ -11,6 +11,7 @@ import (
 func (d *Documents) GetDocuments(rw http.ResponseWriter, r *http.Request) {
 	d.l.Debug("Get all documents")
 	rw.Header().Add("Content-Type", "application/json")
+	uuid := r.Context().Value(KeyUUID{}).(UUID)
 
 	stringPage := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(stringPage)
@@ -21,7 +22,7 @@ func (d *Documents) GetDocuments(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	documents, err := db.FindDocuments(page)
+	documents, err := db.FindDocuments(page, uuid.Value)
 	if err != nil {
 		d.l.Error("Unable to fetch documents")
 

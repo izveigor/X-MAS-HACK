@@ -31,9 +31,11 @@ func main() {
 
 	getDocuments := router.Methods(http.MethodGet).Subrouter()
 	getDocuments.HandleFunc("/documents", documentsHandler.GetDocuments)
+	getDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
 	postDocuments := router.Methods(http.MethodPost).Subrouter()
 	postDocuments.HandleFunc("/documents", documentsHandler.CreateDocument)
+	postDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
 	cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
 

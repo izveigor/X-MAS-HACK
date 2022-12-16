@@ -43,6 +43,7 @@ func InsertDocument(document Document) error {
 
 	types, scores := sortTypes(document)
 	createdDocument := Document{
+		Uuid:   document.Uuid,
 		Name:   document.Name,
 		Date:   document.Date,
 		Status: document.Status,

@@ -12,6 +12,7 @@ import (
 func (d *Documents) CreateDocument(rw http.ResponseWriter, r *http.Request) {
 	d.l.Debug("Create document")
 	rw.Header().Add("Content-Type", "multipart/form-data")
+	uuid := r.Context().Value(KeyUUID{}).(UUID).Value
 
 	err := r.ParseMultipartForm(25 * 1024)
 	if err != nil {
@@ -38,6 +39,7 @@ func (d *Documents) CreateDocument(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		db.InsertDocument(db.Document{
+			Uuid:   uuid,
 			Name:   files[i].Filename,
 			Date:   time.Now(),
 			Status: "Анализ",

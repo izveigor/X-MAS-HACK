@@ -4,6 +4,11 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
+type KeyUUID struct{}
+type UUID struct {
+	Value string
+}
+
 type Documents struct {
 	l hclog.Logger
 }
