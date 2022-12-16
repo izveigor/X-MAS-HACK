@@ -37,6 +37,10 @@ func main() {
 	postDocuments.HandleFunc("/documents", documentsHandler.CreateDocument)
 	postDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
+	websocketDocuments := router.Methods(http.MethodGet).Subrouter()
+	websocketDocuments.HandleFunc("/ws/documents", documentsHandler.SendDocument)
+	websocketDocuments.Use(documentsHandler.MiddlewareAuthorization)
+
 	cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
 
 	server := http.Server{
