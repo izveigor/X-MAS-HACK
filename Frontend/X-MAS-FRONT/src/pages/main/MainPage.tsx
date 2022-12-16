@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import DragAndDrop from "../../components/dragAndDrop/DragAndDrop";
-import RoundSelection from "../../components/roundSelection/RoundSelection";
 import Card from "../../components/ui/card/Card";
 import {AuthContext} from "../../providers/AuthProvider/AuthProvider";
-import status from "./table/status/Status";
-import Status from "./table/status/Status";
+import {TableLine} from "./table/style";
+import TableRow from "./table/TableRow/TableRow";
 
 const MainPage = () => {
 	const {token, username, email} = React.useContext(AuthContext);
@@ -38,34 +37,16 @@ const MainPage = () => {
 
 
 						[...Array(30)].map((e, i) => {
-							return <TableLine isEven={i % 2 === 0} key={i}>
-								<p>{test.name}</p>
-								<p>10.10.2012 13:14</p>
-								<p><Status status={test.status}/></p>
-								<p>{test.type[0]}</p>
-								<p>{test.accuracy[0]}</p>
-								<p>?</p>
-							</TableLine>
+							return <TableRow key={i} id={i} name={Math.random().toString(36) + '.pdf'}
+							                 datetime={test.datetime}
+							                 status={test.status} type={test.type} accuracy={test.accuracy}
+							                 isEven={i % 2 === 0}/>
 						})
 					}
 				</TableContainer>
 			</DocumentWrapper>
 			<DocumentLoader>
 				<Card><CardContent><Title>Анализировать</Title><DragAndDrop/>
-					<p>Только форматы pdf, doc, docx. До
-						25МБ</p>
-					<FileNamesContainer>
-						<RoundSelection title={'afgeggrsg.docx'} onClick={() => {
-							console.log('aa')
-						}}/>
-						<RoundSelection title={'1312.pdf'} onClick={() => {
-							console.log('aa')
-						}}/>
-						<RoundSelection title={'sadfasfafs.docx'} onClick={() => {
-							console.log('aa')
-						}}/>
-					</FileNamesContainer>
-
 				</CardContent></Card>
 
 			</DocumentLoader>
@@ -153,21 +134,5 @@ const TableContainer = styled.div`
   align-items: center;
 `
 
-const TableLine = styled.div<{ isEven: boolean }>`
-  padding: 0 16px;
-  height: 44px;
-  font-weight: 500;
-  font-size: 14px;
-  align-content: center;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1.7fr 128px 72px 128px 64px 24px;
-  grid-gap: 8px;
-  background-color: ${props => props.isEven ? props.theme.colors.easy : props.theme.colors.background};
-  border-radius: 8px;
-  
-  :hover {
-    background-color: ${props => props.theme.colors.blue};
-  }
-`
+
 
