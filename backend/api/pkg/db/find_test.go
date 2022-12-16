@@ -43,7 +43,7 @@ func TestFindDocument(t *testing.T) {
 		secondDocument,
 	}
 
-	foundDocuments, _ := FindDocuments(1)
+	foundDocuments, _ := FindDocuments(1, "q")
 
 	for i := 0; i < len(foundDocuments); i++ {
 		assert.Equal(t, foundDocuments[i].Name, checkedDocuments[i].Name)

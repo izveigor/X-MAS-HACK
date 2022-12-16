@@ -8,10 +8,12 @@ import (
 )
 
 type ConfigType struct {
-	MongoUrl string `mapstructure:"MONGO_URL"`
-	RMQUrl   string `mapstructure:"RMQ_URL"`
-	Host     string `mapstructure:"HOST"`
-	Port     string `mapstructure:"PORT"`
+	AuthenticationServiceUrl string `mapstructure:"AUTHENTICATION_SERVICE_URL"`
+	MongoUrl                 string `mapstructure:"MONGO_URL"`
+	RMQUrl                   string `mapstructure:"RMQ_URL"`
+	PrefixUrl                string `mapstructure:"PREFIX_URL"`
+	Host                     string `mapstructure:"HOST"`
+	Port                     string `mapstructure:"PORT"`
 }
 
 func LoadConfig() (c *ConfigType) {

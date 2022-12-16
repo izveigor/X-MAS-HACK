@@ -6,18 +6,21 @@ import (
 	"time"
 
 	"github.com/izveigor/X-MAS-HACK/pkg/config"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type Document struct {
-	// ID     primitive.ObjectID `bson:"_id"`
-	Name   string    `bson:"name"`
-	Date   time.Time `bson:"time"`
-	Status string    `bson:"status"`
-	Types  []string  `bson:"types"`
-	Scores []float32 `bson:"scores"`
+	Id         primitive.ObjectID `bson:"_id"`
+	KeyPhrases []string           `bson:"key_phrases"`
+	Uuid       string             `bson:"_uuid"`
+	Name       string             `bson:"name"`
+	Date       time.Time          `bson:"time"`
+	Status     string             `bson:"status"`
+	Types      []string           `bson:"types"`
+	Scores     []float32          `bson:"scores"`
 }
 
 var documentsCollection *mongo.Collection

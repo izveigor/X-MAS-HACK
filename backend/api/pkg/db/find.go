@@ -11,12 +11,12 @@ var (
 	paginationSize = 10
 )
 
-func FindDocuments(page int) ([]*Document, error) {
+func FindDocuments(page int, uuid string) ([]*Document, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	var documents []*Document
 
-	cursor, err := documentsCollection.Find(ctx, bson.D{})
+	cursor, err := documentsCollection.Find(ctx, bson.D{{"uuid", uuid}})
 	if err != nil {
 		return nil, err
 	}
