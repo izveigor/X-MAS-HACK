@@ -1,27 +1,23 @@
 import React from "react";
-import styled from "styled-components";
-import Button from "./components/ui/button/Button";
+import {
+    Route,
+    Routes
+} from "react-router-dom";
 import Header from "./components/header/Header";
 import LoginForm from "./pages/auth/Login/LoginForm";
 import Registration from "./pages/auth/Registration/Registration";
-import Main from "./pages/main/Main";
+import MainPage from "./pages/main/MainPage";
 import AppWrapper from "./style";
-import {
-    BrowserRouter as Router,
-    Route,
-    Link,
-    Routes
-} from "react-router-dom";
 
 
 function App() {
-  return (
-    <AppWrapper>
-        <Header />
-        <Routes>
-            <Route path={'/login'} element={<LoginForm/>} />
-            <Route path={'/registration'} element={<Registration/>} />
-            <Route path={'/'} element={<Main/>}/>
+    return (
+        <AppWrapper>
+            <Header/>
+            <Routes>
+                <Route path={'/login'} element={<LoginForm/>}/>
+                <Route path={'/registration'} element={<Registration/>}/>
+                <Route path={'/'} element={<MainPage/>}/>
         </Routes>
     </AppWrapper>
   )
