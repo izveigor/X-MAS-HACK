@@ -1,4 +1,4 @@
-package documents
+package websockets
 
 type Hub struct {
 	Clients    map[*Client]bool
@@ -6,7 +6,7 @@ type Hub struct {
 	unregister chan *Client
 }
 
-func (h *Hub) run() {
+func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.register:
@@ -19,7 +19,16 @@ func (h *Hub) run() {
 	}
 }
 
-var hub = &Hub{
+func (h *Hub) FindClient(uuid string) *Client {
+	for client, _ := range h.Clients {
+		if client.Uuid == uuid {
+			return client
+		}
+	}
+	return nil
+}
+
+var WebsocketHub = &Hub{
 	Clients:    map[*Client]bool{},
 	register:   make(chan *Client),
 	unregister: make(chan *Client),

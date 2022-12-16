@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
+	"github.com/izveigor/X-MAS-HACK/pkg/handlers/websockets"
 )
 
 func (d *Documents) SendDocument(rw http.ResponseWriter, r *http.Request) {
@@ -19,6 +20,6 @@ func (d *Documents) SendDocument(rw http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 		return
 	}
-	client := NewClient(uuid, conn, hub)
-	client.Hub.register <- client
+	websockets.NewClient(uuid, conn)
+	// client.Hub.register <- client
 }

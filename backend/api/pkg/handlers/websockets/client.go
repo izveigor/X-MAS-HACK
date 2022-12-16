@@ -1,4 +1,4 @@
-package documents
+package websockets
 
 import (
 	"log"
@@ -24,10 +24,10 @@ func (c *Client) SendDocumentInformation(document *db.Document) {
 	}
 }
 
-func NewClient(uuid string, conn *websocket.Conn, hub *Hub) *Client {
+func NewClient(uuid string, conn *websocket.Conn) *Client {
 	return &Client{
 		Uuid: uuid,
 		Conn: conn,
-		Hub:  hub,
+		Hub:  WebsocketHub,
 	}
 }

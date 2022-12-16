@@ -17,11 +17,21 @@ import (
 	"github.com/izveigor/X-MAS-HACK/pkg/handlers/documents"
 )
 
-var bindAddress string = config.Config.Host + ":" + config.Config.Port
+var (
+	bindAddress string = config.Config.Host + ":" + config.Config.Port
+)
 
 func main() {
 	db.ConnectToMongo()
-	go broker.ConnectPublisher()
+	broker.ConnectToBroker()
+	broker.StartPublisher()
+	broker.StartConsumer()
+
+	defer func() {
+		broker.RabbitMQBroker.Conn.Close()
+		broker.RabbitMQBroker.Publisher.Close()
+		broker.RabbitMQBroker.Consumer.Close()
+	}()
 
 	l := hclog.Default()
 
@@ -30,15 +40,15 @@ func main() {
 	documentsHandler := documents.NewDocuments(l)
 
 	getDocuments := router.Methods(http.MethodGet).Subrouter()
-	getDocuments.HandleFunc("/documents", documentsHandler.GetDocuments)
+	getDocuments.HandleFunc(config.Config.PrefixUrl+"/documents", documentsHandler.GetDocuments)
 	getDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
 	postDocuments := router.Methods(http.MethodPost).Subrouter()
-	postDocuments.HandleFunc("/documents", documentsHandler.CreateDocument)
+	postDocuments.HandleFunc(config.Config.PrefixUrl+"/documents", documentsHandler.CreateDocument)
 	postDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
 	websocketDocuments := router.Methods(http.MethodGet).Subrouter()
-	websocketDocuments.HandleFunc("/ws/documents", documentsHandler.SendDocument)
+	websocketDocuments.HandleFunc(config.Config.PrefixUrl+"/ws/documents", documentsHandler.SendDocument)
 	websocketDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
 	cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
