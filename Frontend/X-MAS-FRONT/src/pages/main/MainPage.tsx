@@ -1,3 +1,4 @@
+import {Pagination} from "antd";
 import React from "react";
 import styled from "styled-components";
 import DragAndDrop from "../../components/dragAndDrop/DragAndDrop";
@@ -26,13 +27,13 @@ const MainPage = () => {
 		<MainWrapper>
 			<DocumentWrapper><Title>Документы</Title>
 				<TableContainer>
-					<TableLine isEven={false}>
+					<LegendTableLine>
 						<ColumnName>Название</ColumnName>
 						<ColumnName>Дата</ColumnName>
 						<ColumnName>Статус</ColumnName>
 						<ColumnName>Вид договора</ColumnName>
 						<ColumnName>Точность</ColumnName>
-					</TableLine>
+					</LegendTableLine>
 					{//30 times
 						[...Array(30)].map((e, i) => {
 							return <TableRow key={i} id={i} name={Math.random().toString(36) + '.pdf'}
@@ -42,6 +43,9 @@ const MainPage = () => {
 						})
 					}
 				</TableContainer>
+				<PaginationContainer>
+					<Pagination size={'default'} total={100} showSizeChanger={false} defaultCurrent={1}/>
+				</PaginationContainer>
 			</DocumentWrapper>
 			<DocumentLoader>
 				<Card>
@@ -59,14 +63,23 @@ export default MainPage
 
 
 const MainWrapper = styled.div`
+  min-height: 100vh;
   display: grid;
   grid-template-columns: 2.5fr 1fr;
   grid-gap: 44px;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 1200px) {
+    display: flex;
+    flex-direction: column-reverse;
   }
 `
+
+const LegendTableLine= styled(TableLine)`
+@media (max-width: 776px) {
+    display: none;
+}
+  `
+
 const FileNamesContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -75,15 +88,19 @@ const FileNamesContainer = styled.div`
   gap: 8px;
 `
 
+const PaginationContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 24px;
+`
+
 const Title = styled.h1`
   width: 100%;
   text-align: start;
   font-size: 24px;
   font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: 18px;
-  }
+  
 `
 
 const DocumentLoader = styled.div`
@@ -110,15 +127,7 @@ const CardContent = styled.div`
 const ColumnName = styled.p`
   font-weight: 600;
   font-size: 14px;
-
-  @media (max-width: 768px) {
-    font-weight: 400;
-    font-size: 12px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 10px;
-  }
+  
 `
 
 const DocumentWrapper = styled.div`
@@ -133,6 +142,11 @@ const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  //each even row has different background color
+  & > div:nth-child(2n) {
+    background-color: ${({theme}) => theme.colors.easy};
+  }
 `
 
 

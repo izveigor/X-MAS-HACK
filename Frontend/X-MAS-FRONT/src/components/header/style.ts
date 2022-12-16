@@ -30,6 +30,10 @@ width: 45px;
 height: 45px;;
 background: #9CB5ED;
 border-radius: 16px;
+  
+  @media (max-width: 576px) {
+    display: none;
+  }
 `;
 
 const UserNameSection = styled.div`

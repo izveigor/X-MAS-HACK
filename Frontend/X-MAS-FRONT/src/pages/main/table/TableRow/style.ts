@@ -9,6 +9,7 @@ const ExpendIconWrapper = styled.div`
   border-radius: 50%;
   cursor: pointer;
   transition: ${props => props.theme.transition.transition};
+  align-self: center;
 `;
 
 const ExpendContent = styled.div`

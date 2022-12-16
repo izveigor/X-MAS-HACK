@@ -10,6 +10,7 @@ const FormWrapper = styled.div`
   	  margin-top: 10%;
 	  width: 100%;
 	  height: 100%;
+  	  position: relative;
 	 `
 
 const Form = styled.form`

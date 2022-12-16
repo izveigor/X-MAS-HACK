@@ -3,7 +3,11 @@ import expend from '../../../../assets/images/expend.svg';
 import cutFileName from "../../../../service/scripts/cutFileName";
 import normalizeDate from "../../../../service/scripts/normalizeDate";
 import Status from "../status/Status";
-import {TableLine} from "../style";
+import {
+	InfoText,
+	TableItem,
+	TableLine
+} from "../style";
 import {
 	ExpendContent,
 	ExpendIconWrapper
@@ -38,19 +42,13 @@ const TableRow = (props: ITableRowProps) => {
 	}
 
 
-	//cut name to 28 symbols and add ... + file format
-
-
-	//normalize date to 10.10.2012 13:14
-
-
 	return (
-		<TableLine isEven={isEven}>
-			<p>{cutFileName(name)}</p>
-			<p>{normalizeDate(datetime)}</p>
-			<Status status={status}/>
-			<p>{type[0]}</p>
-			<p>{accuracy[0]}</p>
+		<TableLine>
+			<TableItem><InfoText>Название:</InfoText><p>{cutFileName(name)}</p></TableItem>
+			<TableItem><InfoText>Дата:</InfoText><p>{normalizeDate(datetime)}</p></TableItem>
+			<TableItem><InfoText>Статус:</InfoText><Status status={status}/></TableItem>
+			<TableItem><InfoText>Тип документа:</InfoText><p>{type[0]}</p></TableItem>
+			<TableItem><InfoText>Точность:</InfoText><p>{accuracy[0]}</p></TableItem>
 			<ExpendIconWrapper onClick={expendHandler} ref={expendRef}>
 				<img src={expend} alt='expend'/>
 			</ExpendIconWrapper>

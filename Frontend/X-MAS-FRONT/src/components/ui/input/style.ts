@@ -23,6 +23,7 @@ const StyledInput = styled.input`
   	  border: 2px solid ${props => props.theme.colors.accent};
   background: ${props => props.theme.colors.easy};
   	  border-radius: 8px;
+  box-sizing: border-box;
 `
 
 const ErrorBlock = styled.div`

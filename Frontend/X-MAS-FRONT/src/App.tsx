@@ -3,6 +3,7 @@ import {
     Route,
     Routes
 } from "react-router-dom";
+import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import LoginForm from "./pages/auth/Login/LoginForm";
 import Registration from "./pages/auth/Registration/Registration";
@@ -19,6 +20,7 @@ function App() {
                 <Route path={'/registration'} element={<Registration/>}/>
                 <Route path={'/'} element={<MainPage/>}/>
         </Routes>
+            <Footer/>
     </AppWrapper>
   )
 }
