@@ -33,9 +33,7 @@ const MainPage = () => {
 						<ColumnName>Вид договора</ColumnName>
 						<ColumnName>Точность</ColumnName>
 					</TableLine>
-					{//20 times
-
-
+					{//30 times
 						[...Array(30)].map((e, i) => {
 							return <TableRow key={i} id={i} name={Math.random().toString(36) + '.pdf'}
 							                 datetime={test.datetime}
@@ -46,9 +44,12 @@ const MainPage = () => {
 				</TableContainer>
 			</DocumentWrapper>
 			<DocumentLoader>
-				<Card><CardContent><Title>Анализировать</Title><DragAndDrop/>
-				</CardContent></Card>
-
+				<Card>
+					<CardContent>
+						<Title>Анализировать</Title>
+						<DragAndDrop/>
+				</CardContent>
+				</Card>
 			</DocumentLoader>
 		</MainWrapper>
 	)
@@ -58,7 +59,6 @@ export default MainPage
 
 
 const MainWrapper = styled.div`
-  margin-top: 24px;
   display: grid;
   grid-template-columns: 2.5fr 1fr;
   grid-gap: 44px;
@@ -104,6 +104,7 @@ const CardContent = styled.div`
   width: 100%;
   padding: 24px;
   box-sizing: border-box;
+  position: relative;
 `
 
 const ColumnName = styled.p`

@@ -18,8 +18,11 @@ const Registration = () => {
 	const [passwordError, setPasswordError] = React.useState<string>('');
 
 	useEffect(() => {
-		!isEmailValid(email) ? setEmailError('Неправильный формат') : '';
-
+		if (email && !isEmailValid(email)) {
+			setEmailError("Неправильный формат");
+		} else {
+			setEmailError("");
+		}
 	}, [email])
 
 	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +41,8 @@ const Registration = () => {
 			<Form>
 				<Input title={'Почта'} value={email} handleChange={handleEmailChange} error={emailError}/>
 				<Input title={'Пароль'} value={password} type={'password'} handleChange={handlePasswordChange}/>
-				<Button main={true}>Войти</Button>
+				<Input title={'ФИО'} value={username} type={'text'} handleChange={handleUsernameChange}/>
+				<Button main={true}>Регистрация</Button>
 			</Form>
 			<p>Есть аккаунт?<Accent><Link to={'/login'}>Войти</Link></Accent></p>
 		</FormWrapper>

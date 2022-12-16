@@ -14,7 +14,13 @@ const LoginForm = () => {
 	const [password, setPassword] = useState("");
 	const [emailError, setEmailError] = useState<string>("");
 	const [passwordError, setPasswordError] = useState<string>("");
-
+	useEffect(() => {
+		if (email && !isEmailValid(email)) {
+			setEmailError("Неправильный формат");
+		} else {
+			setEmailError("");
+		}
+	}, [email])
 	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.target.value);
 	}

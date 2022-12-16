@@ -9,7 +9,7 @@
   box-sizing: border-box;
 }
 
-button, input, li {
+button, input, li, image {
   all: unset;
 }
 

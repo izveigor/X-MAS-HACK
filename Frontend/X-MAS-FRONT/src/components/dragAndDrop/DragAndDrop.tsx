@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import cutFileName from "../../service/scripts/cutFileName";
 import RoundSelection from "../roundSelection/RoundSelection";
 import Button from "../ui/button/Button";
 
@@ -65,28 +66,34 @@ export const DragAndDrop = () => {
 		}
 	}
 
+	const handleSubmit = () =>
+	{
+
+	}
+
 	return (
 		<>
-			<DragAndDropZone>
-				<p>Перетащите сюда документы <br/>или</p>
-				<DragAndDropInput onDrop={onDrop} onDragOver={onDragOver} onDragEnter={onDragEnter}
-				                  onDragLeave={onDragLeave}
-				                  ref={fileInputRef} type='file' multiple={true} onChange={onChange}/>
-				<Button main={false} onClick={openFileDialog}>Выберите файл</Button>
-			</DragAndDropZone>
-			<p>Только форматы pdf, doc, docx. До
-				5Мб</p>
-			<FileNamesContainer>
-				{files.map((file, index) => {
-					return <RoundSelection key={index} title={file.name} onClick={() => {
-						setFiles(files.filter((f) => f.name !== file.name));
-					}
-					}/>
-				})}
-			</FileNamesContainer>
+			{files.length === 0 ? (
+				<><DragAndDropZone>
+					<p>Перетащите сюда документы <br/>или</p>
+					<DragAndDropInput onDrop={onDrop} onDragOver={onDragOver} onDragEnter={onDragEnter}
+					                  onDragLeave={onDragLeave}
+					                  ref={fileInputRef} type='file' multiple={true} onChange={onChange}/>
+					<Button main={false} onClick={openFileDialog}>Выберите файл</Button>
+				</DragAndDropZone><p>Только форматы pdf, doc, docx. До
+					5Мб</p></>
+					) : (
+				<><FileNamesContainer>
+					{files.map((file, index) => {
+						return <RoundSelection key={index} title={cutFileName(file.name)} onClick={() => {
+							setFiles(files.filter((f) => f.name !== file.name));
+						}}/>;
+					})}
+				</FileNamesContainer><AnalyzeButton main={true} onClick={handleSubmit}>Анализировать</AnalyzeButton></>
+			)}
 		</>
-	)
-}
+	);
+};
 
 				export default DragAndDrop;
 
@@ -133,3 +140,7 @@ const FileNamesContainer = styled.div`
   margin-top: 24px;
   gap: 8px;
 `
+
+const AnalyzeButton = styled(Button)`
+	  margin-top: 24px;
+	  `

@@ -4,6 +4,7 @@ const InputWrapper = styled.div`
 	  display: flex;
 	  flex-direction: column;
   		width: 100%;
+  gap: 2px;
 	  `;
 const InputLabel = styled.label`
 			  font-style: normal;

@@ -1,5 +1,7 @@
 import React from "react";
 import expend from '../../../../assets/images/expend.svg';
+import cutFileName from "../../../../service/scripts/cutFileName";
+import normalizeDate from "../../../../service/scripts/normalizeDate";
 import Status from "../status/Status";
 import {TableLine} from "../style";
 import {
@@ -37,28 +39,14 @@ const TableRow = (props: ITableRowProps) => {
 
 
 	//cut name to 28 symbols and add ... + file format
-	const cutName = (name: string) => {
-		if (name.length > 32) {
-			const format = name.slice(name.lastIndexOf('.'));
-			const cutName = name.slice(0, 28);
-			return cutName + '...' + format;
-		}
-		return name;
-	}
+
 
 	//normalize date to 10.10.2012 13:14
 
-	const normalizeDate = (date: string) => {
-		const year = date.slice(0, 4);
-		const month = date.slice(5, 7);
-		const day = date.slice(8, 10);
-		const time = date.slice(11, 16);
-		return day + '.' + month + '.' + year + ' ' + time;
-	}
 
 	return (
 		<TableLine isEven={isEven}>
-			<p>{cutName(name)}</p>
+			<p>{cutFileName(name)}</p>
 			<p>{normalizeDate(datetime)}</p>
 			<Status status={status}/>
 			<p>{type[0]}</p>
