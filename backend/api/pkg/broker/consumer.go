@@ -13,7 +13,7 @@ type ReceivedData struct {
 	Id         string    `json:"id"`
 	Types      []string  `json:"types"`
 	Scores     []float32 `json:"scores"`
-	KeyPhrases []string  `json:key_phrases`
+	KeyPhrases []string  `json:"key_phrases"`
 }
 
 func StartConsumer() {
@@ -38,8 +38,8 @@ func StartConsumer() {
 			}
 			return rabbitmq.Ack
 		},
-		"AM",
-		rabbitmq.WithConsumerOptionsRoutingKey("ml"),
+		"ML",
+		rabbitmq.WithConsumerOptionsRoutingKey("MA"),
 		rabbitmq.WithConsumerOptionsExchangeName("document"),
 		rabbitmq.WithConsumerOptionsExchangeDeclare,
 	)
