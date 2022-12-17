@@ -25,9 +25,9 @@ func StartPublisher() {
 	RabbitMQBroker.Publisher = publisher
 }
 
-func Publish(FileContent []byte) error {
+func Publish(Id []byte, FileContent []byte) error {
 	err := RabbitMQBroker.Publisher.Publish(
-		[]byte(FileContent),
+		append(Id, FileContent...),
 		[]string{"AM"},
 		rabbitmq.WithPublishOptionsContentType("application/json"),
 		rabbitmq.WithPublishOptionsMandatory,

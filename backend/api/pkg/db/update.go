@@ -12,7 +12,7 @@ func UpdateDocument(id string, types []string, scores []float32, keyPhrases []st
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	filter := bson.D{{"id", id}}
+	filter := bson.D{{"_id", id}}
 	updateDocument := bson.M{"$set": bson.M{
 		"status":      "Анализ",
 		"types":       types,
@@ -20,7 +20,7 @@ func UpdateDocument(id string, types []string, scores []float32, keyPhrases []st
 		"key_phrases": keyPhrases,
 	}}
 
-	results := documentsCollection.FindOneAndUpdate(ctx, filter, updateDocument, options.FindOneAndUpdate().SetReturnDocument(1))
+	results := DocumentsCollection.FindOneAndUpdate(ctx, filter, updateDocument, options.FindOneAndUpdate().SetReturnDocument(1))
 
 	var document Document
 

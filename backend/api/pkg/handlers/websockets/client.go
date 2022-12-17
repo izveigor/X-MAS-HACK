@@ -10,12 +10,12 @@ import (
 type Client struct {
 	Uuid string
 	Conn *websocket.Conn
-	Hub  *Hub
+	hub  *Hub
 }
 
 func (c *Client) SendDocumentInformation(document *db.Document) {
 	defer func() {
-		c.Hub.unregister <- c
+		c.hub.unregister <- c
 		c.Conn.Close()
 	}()
 	connectionErr := c.Conn.WriteJSON(document)
@@ -24,10 +24,10 @@ func (c *Client) SendDocumentInformation(document *db.Document) {
 	}
 }
 
-func NewClient(uuid string, conn *websocket.Conn) *Client {
+func NewClient(uuid string, conn *websocket.Conn, hub *Hub) *Client {
 	return &Client{
-		Uuid: uuid,
-		Conn: conn,
-		Hub:  WebsocketHub,
+		Uuid:  uuid,
+		Conn:  conn,
+		WSHub: hub,
 	}
 }

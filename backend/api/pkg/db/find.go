@@ -16,7 +16,7 @@ func FindDocuments(page int, uuid string) ([]*Document, error) {
 	defer cancel()
 	var documents []*Document
 
-	cursor, err := documentsCollection.Find(ctx, bson.D{{"uuid", uuid}})
+	cursor, err := DocumentsCollection.Find(ctx, bson.D{{"_uuid", uuid}})
 	if err != nil {
 		return nil, err
 	}

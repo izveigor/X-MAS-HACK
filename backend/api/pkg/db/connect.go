@@ -13,17 +13,17 @@ import (
 )
 
 type Document struct {
-	Id         primitive.ObjectID `bson:"_id"`
-	KeyPhrases []string           `bson:"key_phrases"`
-	Uuid       string             `bson:"_uuid"`
-	Name       string             `bson:"name"`
-	Date       time.Time          `bson:"time"`
-	Status     string             `bson:"status"`
-	Types      []string           `bson:"types"`
-	Scores     []float32          `bson:"scores"`
+	Id         primitive.ObjectID `bson:"_id", json:"_id, omitempty"`
+	KeyPhrases []string           `bson:"key_phrases", json:"key_phrases"`
+	Uuid       string             `bson:"_uuid", json:"_uuid, omitempty"`
+	Name       string             `bson:"name", json:"name"`
+	Date       time.Time          `bson:"time", json:"time"`
+	Status     string             `bson:"status", json:"status"`
+	Types      []string           `bson:"types", json:"types"`
+	Scores     []float32          `bson:"scores", json:"scores"`
 }
 
-var documentsCollection *mongo.Collection
+var DocumentsCollection *mongo.Collection
 
 func ConnectToMongo() {
 	client, err := mongo.NewClient(options.Client().ApplyURI(config.Config.MongoUrl))
@@ -44,5 +44,5 @@ func ConnectToMongo() {
 		log.Fatal(err)
 	}
 
-	documentsCollection = client.Database("documents").Collection("documents")
+	DocumentsCollection = client.Database("documents").Collection("documents")
 }

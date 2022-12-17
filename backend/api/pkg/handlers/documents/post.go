@@ -1,12 +1,14 @@
 package documents
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"time"
 
 	"github.com/izveigor/X-MAS-HACK/pkg/broker"
 	"github.com/izveigor/X-MAS-HACK/pkg/db"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (d *Documents) CreateDocument(rw http.ResponseWriter, r *http.Request) {
@@ -21,7 +23,7 @@ func (d *Documents) CreateDocument(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 	files := r.MultipartForm.File["files"]
-
+	var documents []db.Document
 	for i, _ := range files {
 		file, err := files[i].Open()
 		defer file.Close()
@@ -31,20 +33,30 @@ func (d *Documents) CreateDocument(rw http.ResponseWriter, r *http.Request) {
 			return
 		}
 		content, err := ioutil.ReadAll(file)
-		err = broker.Publish(content)
+
+		document := db.Document{
+			Id:         primitive.NewObjectID(),
+			KeyPhrases: []string{},
+			Uuid:       uuid,
+			Name:       files[i].Filename,
+			Date:       time.Now(),
+			Status:     "Анализ",
+			Types:      []string{},
+			Scores:     []float32{},
+		}
+		documents = append(documents, document)
+
+		err = broker.Publish([]byte(document.Id.Hex()), content)
 		if err != nil {
 			d.l.Error("Bad request", "error", err)
 			http.Error(rw, "Cannot retrieve the file", http.StatusBadRequest)
 			return
 		}
 
-		db.InsertDocument(db.Document{
-			Uuid:   uuid,
-			Name:   files[i].Filename,
-			Date:   time.Now(),
-			Status: "Анализ",
-			Types:  []string{},
-			Scores: []float32{},
-		})
+		db.InsertDocument(document)
 	}
+
+	rw.Header().Set("Content-Type", "application/json")
+	rw.WriteHeader(http.StatusOK)
+	json.NewEncoder(rw).Encode(documents)
 }
