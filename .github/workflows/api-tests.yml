@@ -8,20 +8,20 @@ on:
 defaults:
   run:
     working-directory: ./backend/api
-  
-  services:
-    rabbitmq:
-      image: rabbitmq
-      ports:
-        - 5672:5672
-
-    mongodb:
-      image: mongo
-      ports:
-        - 27017:27017
 
 jobs:
   api-tests:
+    services:
+      rabbitmq:
+        image: rabbitmq
+        ports:
+          - 5672:5672
+
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+
     runs-on: [ubuntu-latest]
     steps:
       - name: Checkout
