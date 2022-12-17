@@ -1,8 +1,14 @@
-# X-MAS-HACK
+# X-MAS-HACK ![Api-tests](https://github.com/izveigor/X-MAS-HACK/actions/workflows/api-tests.yml/badge.svg)
 Решение команды MISIS - Apollo на хакатоне X-MAS-HACK-2022
 ![Дизайн](https://user-images.githubusercontent.com/68601180/208240779-afbd1d41-2381-4843-8c1b-9786d34df8fc.png)
 # Архитектура
 ![Архитектура](https://user-images.githubusercontent.com/68601180/208241428-10ef568d-acf5-4c4d-8a17-7ff1b5d608f0.JPG)
+
+## Паттерны
+- API Gateway
+- Microservice architecture
+- Database per service
+- Pub-Sub
 
 # Стек
 ## Backend:

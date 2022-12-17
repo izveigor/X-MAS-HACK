@@ -20,10 +20,6 @@ func (d *Documents) SendDocument(rw http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 		return
 	}
-	client := &websockets.Client{
-		Uuid:  uuid,
-		Conn:  conn,
-		WSHub: websockets.WebsocketHub,
-	}
+	websockets.NewClient(uuid, conn, websockets.WebsocketHub)
 	// client.WSHub <- client.register
 }

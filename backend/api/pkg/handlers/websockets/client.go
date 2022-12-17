@@ -26,8 +26,8 @@ func (c *Client) SendDocumentInformation(document *db.Document) {
 
 func NewClient(uuid string, conn *websocket.Conn, hub *Hub) *Client {
 	return &Client{
-		Uuid:  uuid,
-		Conn:  conn,
-		WSHub: hub,
+		Uuid: uuid,
+		Conn: conn,
+		hub:  hub,
 	}
 }

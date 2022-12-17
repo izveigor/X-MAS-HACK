@@ -1,0 +1,54 @@
+name: api-tests
+on:
+  push:
+    paths:
+      - .github/workflows/api-tests.yml
+      - backend/api/**
+
+defaults:
+  run:
+    working-directory: ./backend/api
+  
+  services:
+    rabbitmq:
+      image: rabbitmq
+      ports:
+        - 5672:5672
+
+    mongodb:
+      image: mongo
+      ports:
+        - 27017:27017
+
+jobs:
+  api-tests:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
+
+      - name: Verify dependencies
+        run: go mod verify
+
+      - name: Cache Go modules
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-build-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Run tests
+        run: make test
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+          MONGODB_HOST: localhost
+          MONGODB_PORT: 27017
