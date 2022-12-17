@@ -1,0 +1,14 @@
+version: '3'
+
+
+services:
+
+  server:
+    build: .
+    restart: always
+    container_name: ml_server
+    command: bash -c "python3 main.py"
+    env_file:
+      - prod.rabbitmq.env
+    networks:
+      - raggitmq_network

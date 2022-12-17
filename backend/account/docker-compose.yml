@@ -1,0 +1,39 @@
+version: '3'
+
+
+services:
+
+  server:
+    build: .
+    command: ./
+    restart: always
+    container_name: account_server
+    ports:
+      - 9001:9001
+      - 50051:50051
+    networks:
+      - gateway_network
+      - server_db
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:14
+    restart: always
+    container_name: account_db
+    env_file:
+      - ./config/prod.db.env
+    volumes:
+      - data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - server_db
+
+volumes:
+  data
+
+networks:
+  gateway_network:
+    external: true
+  server_db:

@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+
+  frontend:
+    build: .
+    command: serve -s build
+    restart: always
+    container_name: frontend_client
+    volumes:
+      - X-MAS-FRONT/node_modules
