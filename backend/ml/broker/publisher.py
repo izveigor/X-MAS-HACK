@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 @dataclass
 class SentData:
-    uuid: str
+    id: str
     scores: list[str]
     types: list[float]
     key_phrases: list[str]

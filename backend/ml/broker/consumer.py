@@ -3,6 +3,7 @@ from features.constants import BROKER_SETTINGS
 import threading
 from features.singleton import Singleton
 from features.constants import ID_SIZE
+from model import Model
 
 
 class Consumer(metaclass=Singleton):
@@ -49,5 +50,5 @@ class Consumer(metaclass=Singleton):
 
     def _callback(self, channel, method, properties, body):
         '''Читаем наше сообщение, а затем предсказываем, спам ли это или нет'''
-        id, file = body[:ID_SIZE].decode("utf-8"), body[ID_SIZE:].decode("utf-8")
-        # Предсказывание модели
+        id_, file = body[:ID_SIZE].decode("utf-8"), body[ID_SIZE:].decode("utf-8")
+        Model().predict(id_, file)
