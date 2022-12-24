@@ -7,9 +7,9 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/hashicorp/go-hclog v1.2.0
+	github.com/rabbitmq/amqp091-go v1.4.0
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
-	github.com/wagslane/go-rabbitmq v0.11.0
 	go.mongodb.org/mongo-driver v1.11.1
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
@@ -33,7 +33,6 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/rabbitmq/amqp091-go v1.3.4 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

@@ -4,26 +4,21 @@ import (
 	"log"
 
 	"github.com/izveigor/X-MAS-HACK/pkg/config"
-	rabbitmq "github.com/wagslane/go-rabbitmq"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 type Broker struct {
-	Conn      *rabbitmq.Conn
-	Publisher *rabbitmq.Publisher
-	Consumer  *rabbitmq.Consumer
+	Conn *amqp.Connection
 }
 
-func NewBroker(conn *rabbitmq.Conn) *Broker {
-	return &Broker{Publisher: nil, Consumer: nil, Conn: conn}
+func NewBroker(conn *amqp.Connection) *Broker {
+	return &Broker{Conn: conn}
 }
 
 var RabbitMQBroker *Broker
 
 func ConnectToBroker() {
-	conn, err := rabbitmq.NewConn(
-		config.Config.RMQUrl,
-		rabbitmq.WithConnectionOptionsLogging,
-	)
+	conn, err := amqp.Dial(config.Config.RMQUrl)
 
 	if err != nil {
 		log.Fatal(err)

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -14,32 +15,50 @@ import (
 	"github.com/izveigor/X-MAS-HACK/pkg/broker"
 	"github.com/izveigor/X-MAS-HACK/pkg/db"
 	"github.com/stretchr/testify/assert"
-	rabbitmq "github.com/wagslane/go-rabbitmq"
 )
 
 func TestPost(t *testing.T) {
 	go db.ConnectToMongo()
 	broker.ConnectToBroker()
-	broker.StartPublisher()
 	text := []byte("Текст...")
-	_, err := rabbitmq.NewConsumer(
-		broker.RabbitMQBroker.Conn,
-		func(delivery rabbitmq.Delivery) rabbitmq.Action {
-			body := delivery.Body
-			if len(body) != 24+len(text) {
-				t.Fatal("Broker error")
-			}
-			return rabbitmq.Ack
-		},
-		"document",
-		rabbitmq.WithConsumerOptionsRoutingKey("AM"),
-		rabbitmq.WithConsumerOptionsExchangeName("document"),
-		rabbitmq.WithConsumerOptionsExchangeDeclare,
+
+	ch, err := broker.RabbitMQBroker.Conn.Channel()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer func() {
+		_ = ch.Close()
+	}()
+
+	q, err := ch.QueueDeclare(
+		"MA",
+		false,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	messages, err := ch.Consume(
+		q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 
-	if err != nil {
-		t.Fatal(err)
-	}
+	go func() {
+		for message := range messages {
+			log.Print("Message:", message)
+		}
+	}()
+
 	defer func() {
 		db.DocumentsCollection.Drop(context.TODO())
 	}()

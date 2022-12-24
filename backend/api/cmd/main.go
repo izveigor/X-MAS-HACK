@@ -24,14 +24,6 @@ var (
 func main() {
 	db.ConnectToMongo()
 	broker.ConnectToBroker()
-	broker.StartPublisher()
-	broker.StartConsumer()
-
-	defer func() {
-		broker.RabbitMQBroker.Conn.Close()
-		broker.RabbitMQBroker.Publisher.Close()
-		broker.RabbitMQBroker.Consumer.Close()
-	}()
 
 	l := hclog.Default()
 
@@ -46,10 +38,6 @@ func main() {
 	postDocuments := router.Methods(http.MethodPost).Subrouter()
 	postDocuments.HandleFunc(config.Config.PrefixUrl+"/documents", documentsHandler.CreateDocument)
 	postDocuments.Use(documentsHandler.MiddlewareAuthorization)
-
-	websocketDocuments := router.Methods(http.MethodGet).Subrouter()
-	websocketDocuments.HandleFunc(config.Config.PrefixUrl+"/ws/documents", documentsHandler.SendDocument)
-	websocketDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
 	cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
 

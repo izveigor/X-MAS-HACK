@@ -38,7 +38,7 @@ class Consumer(metaclass=Singleton):
         self._channel = self._connection.channel()
         self._channel.exchange_declare("document", durable=False, exchange_type="direct")
         self._channel.basic_consume(
-            queue="API",
+            queue="AM",
             on_message_callback=self._callback,
             auto_ack=True,
         )
@@ -53,4 +53,5 @@ class Consumer(metaclass=Singleton):
     def _callback(self, channel: Any, method: Any, properties: Any, body: bytes) -> None:
         """Читаем наше сообщение, а затем предсказываем, спам ли это или нет"""
         id_, file = body[:ID_SIZE].decode("utf-8"), body[ID_SIZE:]
+        print(id_, file)
         DocumentModel().predict(id_, file)

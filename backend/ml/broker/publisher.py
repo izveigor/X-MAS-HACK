@@ -42,14 +42,20 @@ class Publisher(metaclass=Singleton):
         )
 
         self._channel = self._connection.channel()
-        self._channel.queue_declare(queue="ML")
-        self._channel.queue_bind(queue="ML", routing_key="AM")
+        self._channel.queue_declare(queue="MA")
+        self._channel.queue_bind(queue="MA", routing_key="ML", exchange="document")
 
     def publish(self, data: SentData) -> None:
         """Публикуем сообщение в очередь"""
+        print(data)
         try:
-            json_data = json.dumps(data)
+            json_data = json.dumps({
+                "id": data.id,
+                "types": data.types,
+                "scores": data.scores,
+                "key_phrases": data.key_phrases,
+            })
         except Exception as e:
             print(e)
-
-        self._channel.basic_publish(routing_key="AM", body=json_data)
+        else:
+            self._channel.basic_publish(routing_key="ML", exchange="document", body=json_data)
