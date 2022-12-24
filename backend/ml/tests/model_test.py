@@ -2,7 +2,6 @@ import pickle
 from unittest.mock import Mock, patch
 
 import pytest
-from pytest import Config
 
 from broker.publisher import SentData
 from features.constants import TYPES
@@ -27,7 +26,7 @@ class TestModel:
     ]
     key_phrases = ["симфония", "мибемоль", "мажор", "крупное", "произведение"]
 
-    def test_read_document(self, download: Config) -> None:
+    def test_read_document(self) -> None:
         with open("./tests/data.pkl", "rb") as f:
             data = pickle.load(f)
         content = DocumentModel()._read_document(data)
@@ -35,11 +34,11 @@ class TestModel:
         content = content.replace('"', "")
         assert content == self.text
 
-    def test_cleaning(self, download: Config) -> None:
+    def test_cleaning(self) -> None:
         cleaned_text = DocumentModel()._cleaning(self.text)
         assert cleaned_text == self.lemmatized_text
 
-    def test_vectorize(self, download: Config) -> None:
+    def test_vectorize(self) -> None:
         _, key_phrases = DocumentModel()._vectorize(self.lemmatized_text)
         assert key_phrases == self.key_phrases
 
@@ -49,7 +48,6 @@ class TestModel:
         self,
         mock__init__: Mock,
         mock_publish: Mock,
-        download: Config,
     ) -> None:
         id_ = "12345"
         with open("./tests/data.pkl", "rb") as f:
