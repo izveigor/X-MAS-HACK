@@ -4,14 +4,14 @@ import closeSvg from "../../assets/images/close.svg";
 
 interface IRoundSelected {
 	title: string;
-	onClick: () => void;
+	onClick?: () => void;
 }
 
 const RoundSelection = (props: IRoundSelected) => {
 	return (
 		<Container>
 			<Title>{props.title}</Title>
-			<Icon src={closeSvg} alt='close' onClick={props.onClick}/>
+			{Boolean(props.onClick) && <Icon src={closeSvg} alt='close' onClick={props.onClick}/>}
 		</Container>
 	);
 }

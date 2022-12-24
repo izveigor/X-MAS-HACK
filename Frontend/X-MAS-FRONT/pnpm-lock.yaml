@@ -6,6 +6,7 @@ specifiers:
   '@types/styled-components': ^5.1.26
   '@vitejs/plugin-react': ^3.0.0
   antd: ^5.0.7
+  moment: ^2.29.4
   react: ^18.2.0
   react-dnd: ^16.0.1
   react-dnd-html5-backend: ^16.0.1
@@ -20,7 +21,8 @@ specifiers:
 
 dependencies:
   '@types/styled-components': 5.1.26
-  antd: 5.0.7_biqbaboplfbrettd7655fr4n2y
+  antd: 5.0.7_jb42yyeu5qxbfieyxjks6malva
+  moment: 2.29.4
   react: 18.2.0
   react-dnd: 16.0.1_kzbn2opkn2327fwg5yzwzya5o4
   react-dnd-html5-backend: 16.0.1
@@ -710,7 +712,7 @@ packages:
     dependencies:
       color-convert: 1.9.3
 
-  /antd/5.0.7_biqbaboplfbrettd7655fr4n2y:
+  /antd/5.0.7_jb42yyeu5qxbfieyxjks6malva:
     resolution: {integrity: sha512-A/HO/VCS6nHMkpnjfPSxXoet1MBu6N003osaGbSI3mnOvRj0V/9jEOXJ2slj+2YNhACFYJfVyXeEamwQx2Njcw==}
     peerDependencies:
       react: '>=16.9.0'
@@ -742,7 +744,7 @@ packages:
       rc-motion: 2.6.2_biqbaboplfbrettd7655fr4n2y
       rc-notification: 5.0.0-alpha.9_biqbaboplfbrettd7655fr4n2y
       rc-pagination: 3.2.0_biqbaboplfbrettd7655fr4n2y
-      rc-picker: 3.1.3_mlnkrlbros4rghcauwy625gk7y
+      rc-picker: 3.1.3_lejchghvacj3hhjkogy3eaalky
       rc-progress: 3.4.1_biqbaboplfbrettd7655fr4n2y
       rc-rate: 2.9.2_biqbaboplfbrettd7655fr4n2y
       rc-resize-observer: 1.2.0_biqbaboplfbrettd7655fr4n2y
@@ -1033,6 +1035,10 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
+
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
@@ -1318,7 +1324,7 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /rc-picker/3.1.3_mlnkrlbros4rghcauwy625gk7y:
+  /rc-picker/3.1.3_lejchghvacj3hhjkogy3eaalky:
     resolution: {integrity: sha512-sXBfgz9DyCs72zrhjb3VEP0sQwTyZjyaZgSxBNGLvoPwpQIlCVZ9VUGYn6wX+MJoM9r7P9VHV4sVLLNyDr8DIA==}
     engines: {node: '>=8.x'}
     peerDependencies:
@@ -1338,6 +1344,7 @@ packages:
       '@babel/runtime': 7.20.6
       classnames: 2.3.2
       dayjs: 1.11.7
+      moment: 2.29.4
       rc-trigger: 5.3.4_biqbaboplfbrettd7655fr4n2y
       rc-util: 5.25.3_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
