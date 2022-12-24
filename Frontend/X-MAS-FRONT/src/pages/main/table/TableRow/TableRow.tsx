@@ -1,5 +1,6 @@
 import React from "react";
 import expend from '../../../../assets/images/expend.svg';
+import RoundSelection from "../../../../components/roundSelection/RoundSelection";
 import {ICard} from "../../../../service/interfaces/ICard";
 import cutFileName from "../../../../service/scripts/cutFileName";
 import normalizeDate from "../../../../service/scripts/normalizeDate";
@@ -10,8 +11,10 @@ import {
 	TableLine
 } from "../style";
 import {
+	CategoriesContainer,
 	ExpendContent,
-	ExpendIconWrapper
+	ExpendIconWrapper,
+	ScoreContainer
 } from "./style";
 
 
@@ -45,7 +48,22 @@ const TableRow = (props: ICard) => {
 			<ExpendIconWrapper onClick={expendHandler} ref={expendRef}>
 				<img src={expend} alt='expend'/>
 			</ExpendIconWrapper>
-			{isExpend && <ExpendContent>{keyWords.map((item, index) => <p key={index}>{item}</p>)}</ExpendContent>}
+			{Boolean(isExpend) &&
+				<ExpendContent>
+					{/*//вывод катгория - вероятность*/}
+					{types.map((type, index) => {
+						return (
+							<ScoreContainer key={index}>
+								<p>{type}</p>
+								<RoundSelection title={score[index].toString()}/>
+							</ScoreContainer>
+						)
+					})}
+					<h5>Ключевые фразы:</h5>
+					<CategoriesContainer>{keyWords.map((item, index) => <RoundSelection
+						title={item}/>)}</CategoriesContainer>
+
+				</ExpendContent>}
 		</TableLine>
 	)
 }
