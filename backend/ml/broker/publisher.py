@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 
 import pika
@@ -5,7 +6,6 @@ from pika.adapters.blocking_connection import BlockingChannel
 
 from features.constants import BROKER_SETTINGS
 from features.singleton import Singleton
-import json
 
 
 @dataclass
@@ -49,12 +49,14 @@ class Publisher(metaclass=Singleton):
         """Публикуем сообщение в очередь"""
         print(data)
         try:
-            json_data = json.dumps({
-                "id": data.id,
-                "types": data.types,
-                "scores": data.scores,
-                "key_phrases": data.key_phrases,
-            })
+            json_data = json.dumps(
+                {
+                    "id": data.id,
+                    "types": data.types,
+                    "scores": data.scores,
+                    "key_phrases": data.key_phrases,
+                }
+            )
         except Exception as e:
             print(e)
         else:

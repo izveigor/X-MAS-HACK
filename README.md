@@ -1,4 +1,4 @@
-# X-MAS-HACK ![Api-tests](https://github.com/izveigor/X-MAS-HACK/actions/workflows/api-tests.yml/badge.svg)
+# X-MAS-HACK ![Api-tests](https://github.com/izveigor/X-MAS-HACK/actions/workflows/api-tests.yml/badge.svg) ![ML-tests](https://github.com/izveigor/X-MAS-HACK/actions/workflows/ml-tests.yml/badge.svg)
 Решение команды MISIS - Apollo на хакатоне X-MAS-HACK-2022
 ![Дизайн](https://user-images.githubusercontent.com/68601180/208240779-afbd1d41-2381-4843-8c1b-9786d34df8fc.png)
 # Архитектура
