@@ -18,26 +18,38 @@ const ExpendContent = styled.div`
   width: 100%;
   align-items: start;
   justify-content: center;
-  height: 123px;
+  min-height: 123px;
+  height: min-content;
   //занять всю строку grid
   grid-column: 1 / -1;
   transition: ${props => props.theme.transition.transition};
 `
 
 const CategoriesContainer = styled.div`
-	  display: flex;
-	  gap: 8px;
-	  padding: 16px 0;
-	  height: fit-content;
-		width: 100%;
-  		justify-content: start;
+  display: flex;
+  gap: 4px;
+  padding: 16px 0;
+  //height gap 4px
+  height: fit-content;
+  width: 100%;
+  justify-content: start;
   //если не помещается в строку, переносить на следующую
   flex-wrap: wrap;
-  
+`
+
+const ScoreContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 200px;
+  width: 100%;
+  padding: 16px 0;
+  height: 24px;
 `
 
 export {
 	ExpendIconWrapper,
 	ExpendContent,
-	CategoriesContainer
+	CategoriesContainer,
+	ScoreContainer
 };

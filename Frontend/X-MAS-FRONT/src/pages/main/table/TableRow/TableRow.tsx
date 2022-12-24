@@ -13,7 +13,8 @@ import {
 import {
 	CategoriesContainer,
 	ExpendContent,
-	ExpendIconWrapper
+	ExpendIconWrapper,
+	ScoreContainer
 } from "./style";
 
 
@@ -47,7 +48,22 @@ const TableRow = (props: ICard) => {
 			<ExpendIconWrapper onClick={expendHandler} ref={expendRef}>
 				<img src={expend} alt='expend'/>
 			</ExpendIconWrapper>
-			{Boolean(isExpend) && <ExpendContent><h5>Ключевые фразы:</h5><CategoriesContainer>{keyWords.map((item, index) => <RoundSelection title={item}/>)}</CategoriesContainer></ExpendContent>}
+			{Boolean(isExpend) &&
+				<ExpendContent>
+					{/*//вывод катгория - вероятность*/}
+					{types.map((type, index) => {
+						return (
+							<ScoreContainer key={index}>
+								<p>{type}</p>
+								<RoundSelection title={score[index].toString()}/>
+							</ScoreContainer>
+						)
+					})}
+					<h5>Ключевые фразы:</h5>
+					<CategoriesContainer>{keyWords.map((item, index) => <RoundSelection
+						title={item}/>)}</CategoriesContainer>
+
+				</ExpendContent>}
 		</TableLine>
 	)
 }
