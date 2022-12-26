@@ -24,6 +24,8 @@ var (
 func main() {
 	db.ConnectToMongo()
 	broker.ConnectToBroker()
+	broker.StartPublisher()
+	go broker.StartConsumer()
 
 	l := hclog.Default()
 
@@ -39,7 +41,10 @@ func main() {
 	postDocuments.HandleFunc(config.Config.PrefixUrl+"/documents", documentsHandler.CreateDocument)
 	postDocuments.Use(documentsHandler.MiddlewareAuthorization)
 
-	cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
+	cors := gohandlers.CORS(
+		gohandlers.AllowedOrigins([]string{"http://localhost:5173"}),
+		gohandlers.AllowedHeaders([]string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin", "Authorization"}),
+	)
 
 	server := http.Server{
 		Addr:         bindAddress,

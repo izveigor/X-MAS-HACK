@@ -9,7 +9,7 @@ const StatusDot = styled.span<IStatusDot>`
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background-color: ${(props) => props.status === 'success' ? props.theme.colors.success : props.theme.colors.wait};
+  background-color: ${(props) => props.status === 'Готово' ? props.theme.colors.success : props.theme.colors.wait};
 `
 
 const StatusContainer = styled.div`

@@ -2,9 +2,11 @@ package db
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -12,9 +14,15 @@ func UpdateDocument(id string, types []string, scores []float32, keyPhrases []st
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	filter := bson.D{{"_id", id}}
+	objID, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	filter := bson.M{"_id": bson.M{"$eq": objID}}
 	updateDocument := bson.M{"$set": bson.M{
-		"status":      "Анализ",
+		"status":      "Готово",
 		"types":       types,
 		"scores":      scores,
 		"key_phrases": keyPhrases,

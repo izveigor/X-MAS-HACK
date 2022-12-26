@@ -41,7 +41,7 @@ const ScoreContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 200px;
+  max-width: 256px;
   width: 100%;
   padding: 16px 0;
   height: 24px;

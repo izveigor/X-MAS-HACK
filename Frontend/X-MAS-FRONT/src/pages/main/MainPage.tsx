@@ -21,19 +21,19 @@ import TableRow from "./table/TableRow/TableRow";
 const MainPage = () => {
 	const {token, logout} = React.useContext(AuthContext);
 	const [cards, setCards] = React.useState<ICard[] | null>(null);
-
+	const [currentPage, setCurrentPage] = React.useState(1);
 	const testCards =
 		{
-			keyWords: ['Купля-продажа', 'Нам приятно, что вам интересна работа в нашей команде.', 'Договор аренды'],
+			key_phrases: ['Купля-продажа', 'Нам приятно, что вам интересна работа в нашей команде.', 'Договор аренды'],
 			name: "afgeggrsg.docx",
 			date: "2021-03-12T12:00:00",
 			status: "wait",
 			types: ['Купля-продажа', 'Поставка', 'Договор аренды'],
-			score: [0.5, 0.1, 0.2],
+			scores: [0.5, 0.1, 0.2],
 		} as ICard;
 
 	const getDocuments = () => {
-		fetch('/documents?page=1', {
+		fetch('http://localhost:9000/api/documents?page=' + currentPage, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -50,6 +50,10 @@ const MainPage = () => {
 				console.log("fetch err")
 			})
 	}
+
+	React.useEffect(() => {
+		getDocuments();
+	}, [currentPage])
 
 	React.useEffect(() => {
 		getDocuments();
@@ -74,23 +78,19 @@ const MainPage = () => {
 						<ColumnName>Вид договора</ColumnName>
 						<ColumnName>Точность</ColumnName>
 					</LegendTableLine>
-					{
+					{/* {
 						[...Array(5)].map((e, i) => <TableRow key={i} name={testCards.name} date={testCards.date}
 						                                      status={testCards.status} types={testCards.types}
 						                                      score={testCards.score} keyWords={testCards.keyWords}/>)
-					}
-					{cards && cards.map((card, i) => {
-						return (
-							<TableRow key={i} name={card.name}
-							          date={card.date}
-							          status={card.status} types={card.types} score={card.score}
-							          keyWords={card.keyWords}/>
-						)
-					})}
+					} */}
+					{cards ? cards.map((card, index) => <TableRow key={index} name={card.name} date={card.date}
+											                                              status={card.status} types={card.types}
+											                                              scores={card.scores} key_phrases={card.key_phrases}/>) : <p>Нет документов</p>}
+					
 				</TableContainer>
-				<PaginationContainer>
-					<Pagination size={'default'} total={100} showSizeChanger={false} defaultCurrent={1}/>
-				</PaginationContainer>
+				{(Boolean(cards) || currentPage !== 1) && <PaginationContainer>
+					<Pagination defaultCurrent={1} total={1000000000} onChange={(page: number) => setCurrentPage(page)} showSizeChanger={false}/>
+				</PaginationContainer>}
 			</DocumentWrapper>
 			<DocumentLoader>
 				<Card>
@@ -105,6 +105,10 @@ const MainPage = () => {
 }
 
 export default MainPage
+
+
+
+
 
 
 

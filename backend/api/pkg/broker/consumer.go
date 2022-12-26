@@ -38,7 +38,7 @@ func StartConsumer() {
 
 	messages, err := ch.Consume(
 		q.Name,
-		"document",
+		"",
 		true,
 		false,
 		false,
@@ -46,7 +46,7 @@ func StartConsumer() {
 		nil,
 	)
 
-	go func() {
+	for {
 		for message := range messages {
 			var receivedData *ReceivedData
 			json.Unmarshal(message.Body, &receivedData)
@@ -60,5 +60,5 @@ func StartConsumer() {
 				log.Fatal(err)
 			}
 		}
-	}()
+	}
 }

@@ -13,10 +13,11 @@ import (
 
 func (d *Documents) CreateDocument(rw http.ResponseWriter, r *http.Request) {
 	d.l.Debug("Create document")
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.Header().Add("Content-Type", "multipart/form-data")
 	uuid := r.Context().Value(KeyUUID{}).(UUID).Value
 
-	err := r.ParseMultipartForm(25 * 1024)
+	err := r.ParseMultipartForm(32 << 20)
 	if err != nil {
 		d.l.Error("Bad request", "error", err)
 		http.Error(rw, "Multipart error", http.StatusBadRequest)

@@ -1,8 +1,8 @@
 export interface ICard {
-	keyWords: string[],
+	key_phrases: string[],
 	name: string,
 	date: string,
 	status: string,
 	types: string[],
-	score: number[],
+	scores: number[],
 }

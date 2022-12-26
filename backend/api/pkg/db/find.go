@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	paginationSize = 10
+	paginationSize = 5
 )
 
 func FindDocuments(page int, uuid string) ([]*Document, error) {
@@ -24,7 +24,7 @@ func FindDocuments(page int, uuid string) ([]*Document, error) {
 	var (
 		index int = 0
 		start int = paginationSize * (page - 1)
-		end   int = paginationSize*page - 1
+		end   int = paginationSize * page
 	)
 
 	for cursor.Next(context.TODO()) {

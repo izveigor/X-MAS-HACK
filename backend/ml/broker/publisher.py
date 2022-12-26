@@ -47,7 +47,6 @@ class Publisher(metaclass=Singleton):
 
     def publish(self, data: SentData) -> None:
         """Публикуем сообщение в очередь"""
-        print(data)
         try:
             json_data = json.dumps(
                 {

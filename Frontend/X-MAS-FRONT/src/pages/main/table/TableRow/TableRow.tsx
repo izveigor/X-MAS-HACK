@@ -19,10 +19,11 @@ import {
 
 
 const TableRow = (props: ICard) => {
-	const {name, date, status, types, score, keyWords} = props;
+	const {name, date, status, types, scores, key_phrases} = props;
+	const isReady = status == "Готово";
 	const [isExpend, setIsExpend] = React.useState<boolean>(false);
 	const expendRef = React.useRef<HTMLImageElement>(null);
-	const maxAccuracy = Math.max(...score);
+	const maxAccuracy = isReady ? Math.max(...scores) : "-";
 	const expendHandler = () => {
 		//change expend state
 		setIsExpend((prev) => !prev);
@@ -43,27 +44,26 @@ const TableRow = (props: ICard) => {
 			<TableItem><InfoText>Название:</InfoText><p>{cutFileName(name)}</p></TableItem>
 			<TableItem><InfoText>Дата:</InfoText><p>{normalizeDate(normalizeDate(date))}</p></TableItem>
 			<TableItem><InfoText>Статус:</InfoText><Status status={status}/></TableItem>
-			<TableItem><InfoText>Тип документа:</InfoText><p>{types[0]}</p></TableItem>
+			<TableItem><InfoText>Тип документа:</InfoText><p>{types[0] || '-'}</p></TableItem>
 			<TableItem><InfoText>Точность:</InfoText><p>{maxAccuracy}</p></TableItem>
-			<ExpendIconWrapper onClick={expendHandler} ref={expendRef}>
+			{isReady && <><ExpendIconWrapper onClick={expendHandler} ref={expendRef}>
 				<img src={expend} alt='expend'/>
 			</ExpendIconWrapper>
 			{Boolean(isExpend) &&
 				<ExpendContent>
-					{/*//вывод катгория - вероятность*/}
-					{types.map((type, index) => {
-						return (
-							<ScoreContainer key={index}>
-								<p>{type}</p>
-								<RoundSelection title={score[index].toString()}/>
-							</ScoreContainer>
-						)
-					})}
-					<h5>Ключевые фразы:</h5>
-					<CategoriesContainer>{keyWords.map((item, index) => <RoundSelection
-						title={item}/>)}</CategoriesContainer>
-
-				</ExpendContent>}
+			{/*//вывод катгория - вероятность*/}
+			{types.map((type, index) => {
+				return (
+				<ScoreContainer key={index}>
+				<p>{type}</p>
+				<RoundSelection title={scores[index].toString()}/>
+				</ScoreContainer>
+				)
+			})}
+				<h5>Ключевые фразы:</h5>
+				<CategoriesContainer>{key_phrases.map((item, index) => <RoundSelection
+				title={item}/>)}</CategoriesContainer>
+				</ExpendContent>}</>}
 		</TableLine>
 	)
 }

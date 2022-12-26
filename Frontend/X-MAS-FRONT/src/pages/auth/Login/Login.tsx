@@ -22,7 +22,7 @@ const Login = () => {
 	const [emailError, setEmailError] = useState<string>("");
 	const login = () => {
 		if (isEmailValid(email) && password) {
-		fetch("http:/localhost:5000/api/v1/login", {
+		fetch("http://localhost:8080/api/v1/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"

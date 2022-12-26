@@ -12,7 +12,7 @@ const Status = (props: IStatus) => {
 	const {status} = props;
 	return (
 		<StatusContainer>
-			{status === 'success' ? 'Готово' : 'В работе'}
+			{status === 'Готово' ? 'Готово' : 'В работе'}
 			<StatusDot status={status}/>
 		</StatusContainer>
 	);

@@ -5,9 +5,9 @@ go 1.19
 require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
-	github.com/gorilla/websocket v1.5.0
 	github.com/hashicorp/go-hclog v1.2.0
 	github.com/rabbitmq/amqp091-go v1.4.0
+	github.com/rs/cors v1.8.2
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
 	go.mongodb.org/mongo-driver v1.11.1

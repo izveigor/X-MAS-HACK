@@ -4,8 +4,6 @@ import (
 	"context"
 	"sort"
 	"time"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type TypesScores struct {
@@ -45,7 +43,7 @@ func InsertDocument(document Document) error {
 
 	types, scores := sortTypes(document)
 	createdDocument := Document{
-		Id:     primitive.NewObjectID(),
+		Id:     document.Id,
 		Uuid:   document.Uuid,
 		Name:   document.Name,
 		Date:   document.Date,

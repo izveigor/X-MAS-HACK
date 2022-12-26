@@ -17,24 +17,24 @@ export const DragAndDrop = (props: IProps) => {
 	const [dragCounter, setDragCounter] = React.useState(0);
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
 	//set files to formData
-	const formData = new FormData();
-	files.forEach((file) => {
-		formData.append('file', file);
-	})
 
 	const sendFiles = () => {
-		fetch('/documents', {
+		const formData = new FormData();
+		files.forEach((file) => {
+			formData.append('files', file);
+		});
+		fetch('http://localhost:9000/api/documents', {
 			method: 'POST',
 			headers: {
 				'Authorization': "Token " + token,
-				'Content-Type': 'multipart/form-data',
+				//'Content-Type': 'multipart/form-data',
 			},
-			body: formData
+			body: formData,
 		})
 			.then(response => response.json())
 			.then(data => console.log(data))
 			.catch(logout)
-			.finally(() => updateDocument).then(() => setFiles([]))
+			.finally(() => updateDocument()).then(() => setFiles([]))
 	}
 	const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();

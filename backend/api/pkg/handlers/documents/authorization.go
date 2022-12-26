@@ -4,9 +4,6 @@ import (
 	"context"
 	"net/http"
 	"strings"
-
-	"github.com/izveigor/X-MAS-HACK/pkg/grpc"
-	"github.com/izveigor/X-MAS-HACK/pkg/grpc/pb"
 )
 
 func (d *Documents) MiddlewareAuthorization(next http.Handler) http.Handler {
@@ -24,7 +21,7 @@ func (d *Documents) MiddlewareAuthorization(next http.Handler) http.Handler {
 			return
 		}
 
-		response, err := grpc.AuthenticationServiceClient.Service.Authenticate(context.Background(), &pb.AuthenticationRequest{
+		/*response, err := grpc.AuthenticationServiceClient.Service.Authenticate(context.Background(), &pb.AuthenticationRequest{
 			Token: token,
 		})
 
@@ -32,9 +29,9 @@ func (d *Documents) MiddlewareAuthorization(next http.Handler) http.Handler {
 			d.l.Error("Failed authentication", "error", err)
 			rw.WriteHeader(http.StatusUnauthorized)
 			return
-		}
+		}*/
 
-		var uuid = response.GetUuid()
+		var uuid = "123" // response.GetUuid()
 
 		ctx := context.WithValue(r.Context(), KeyUUID{}, UUID{Value: uuid})
 		r = r.WithContext(ctx)

@@ -12,6 +12,29 @@ type SentData struct {
 	FileContent []byte
 }
 
+func StartPublisher() {
+	ch, err := RabbitMQBroker.Conn.Channel()
+	if err != nil {
+		panic(err)
+	}
+
+	defer func() {
+		_ = ch.Close()
+	}()
+
+	_, err = ch.QueueDeclare(
+		"AM",
+		false,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func Publish(Id []byte, FileContent []byte) error {
 	ch, err := RabbitMQBroker.Conn.Channel()
 	if err != nil {
