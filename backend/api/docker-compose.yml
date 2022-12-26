@@ -28,3 +28,5 @@ services:
 networks:
   gateway_network:
     external: true
+  raggitmq_network:
+    external: true
