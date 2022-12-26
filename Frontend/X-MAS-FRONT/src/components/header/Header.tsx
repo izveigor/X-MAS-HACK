@@ -13,7 +13,7 @@ import {
 } from "./style";
 
 const Header = () => {
-	const {token} = React.useContext(AuthContext);
+	const {token, logout} = React.useContext(AuthContext);
 	return (
 		<HeaderWrapper>
 			<LogoWrapper>
@@ -21,8 +21,8 @@ const Header = () => {
 			</LogoWrapper>
 			{token ? <UserPanel>
 				<UserNameSection>
-					<UserName>Бродский Иосиф Александрович</UserName>
-					<button><Logout>Выйти</Logout></button>
+					<UserName>User</UserName>
+					<button onClick={logout}><Logout>Выйти</Logout></button>
 				</UserNameSection>
 				<UserPic/>
 			</UserPanel> : null}

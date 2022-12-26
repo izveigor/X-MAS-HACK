@@ -45,7 +45,10 @@ const MainPage = () => {
 					setCards(data)
 				}
 			)
-			.catch(logout)
+			//.catch(logout)
+			.catch(() => {
+				console.log("fetch err")
+			})
 	}
 
 	React.useEffect(() => {
@@ -54,6 +57,7 @@ const MainPage = () => {
 
 	//if not logged in, redirect to login page
 	React.useEffect(() => {
+		console.log('token', token)
 		if (!token) {
 			logout();
 		}

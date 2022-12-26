@@ -1,4 +1,5 @@
 import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 interface IAuthContext {
 	token: string | null;
@@ -21,18 +22,25 @@ const AuthContext = React.createContext<IAuthContext>({
 
 
 const AuthProvider = ({children}: any) => {
-	const [token, setToken] = React.useState<string | null>(null);
-	const [username, setUsername] = React.useState<string | null>(null);
+	const getFromLocalStorage = () => {
+		const token = localStorage.getItem('token');
+		return token ? token : null;
+	}
 
-	// useEffect(() => {
-	// 	//redirect to login page if token is null
-	// 	if (!token && window.location.pathname !== '/login') {
-	// 		window.location.href = '/login';
-	// 	}
-	// 	else {
-	// 		localStorage.setItem('token', token || '');
-	// 	}
-	// }, [token])
+	const [token, setToken] = React.useState<string | null>(getFromLocalStorage());
+	const [username, setUsername] = React.useState<string | null>(null);
+	let navigate = useNavigate();
+	useEffect(() => {
+		if (token) {
+			localStorage.setItem('token', token);
+			navigate("/");
+			console.log("redirect to /");
+		}
+		else {
+			localStorage.removeItem('token');
+		}
+	}, [token])
+
 
 	useEffect(() => {
 			const token = localStorage.getItem('token');
@@ -43,9 +51,11 @@ const AuthProvider = ({children}: any) => {
 		, [])
 
 	const logout = () => {
+		console.log('logout')
 		setToken(null);
 		setUsername(null);
-		// window.location.href = '/login';
+		navigate('/login');
+		localStorage.removeItem('token');
 	}
 
 

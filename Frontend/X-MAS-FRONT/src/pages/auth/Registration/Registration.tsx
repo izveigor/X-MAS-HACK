@@ -1,7 +1,11 @@
-import React, {useEffect} from "react";
+import React, {
+	useContext,
+	useEffect
+} from "react";
 import {Link} from "react-router-dom";
 import Button from "../../../components/ui/button/Button";
 import Input from "../../../components/ui/input/Input";
+import {AuthContext} from "../../../providers/AuthProvider/AuthProvider";
 import isEmailValid from "../../../service/scripts/isEmailValid";
 import {
 	Accent,
@@ -11,26 +15,27 @@ import {
 } from "../style";
 
 const Registration = () => {
+	const {setToken} = useContext(AuthContext);
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [username, setUsername] = React.useState("");
 	const [emailError, setEmailError] = React.useState<string>('');
 	const registration = () => {
 		if (isEmailValid(email) && password && username) {
-			fetch("/api/v1/registration", {
+			fetch("http:/localhost:5000/api/v1/registration", {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json"
+					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
 					name: username,
-					email,
-					password,
+					email: email,
+					password: password,
 				})
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					console.log(data);
+					setToken(data.token);
 				}).catch(() => {
 				setEmailError("Пользователь с таким email уже есть");
 				setPassword("");

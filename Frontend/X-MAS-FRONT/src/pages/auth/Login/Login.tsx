@@ -1,10 +1,12 @@
 import React, {
+	useContext,
 	useEffect,
 	useState
 } from "react";
 import {Link} from "react-router-dom";
 import Button from "../../../components/ui/button/Button";
 import Input from "../../../components/ui/input/Input";
+import {AuthContext} from "../../../providers/AuthProvider/AuthProvider";
 import isEmailValid from "../../../service/scripts/isEmailValid";
 import {
 	Accent,
@@ -14,28 +16,29 @@ import {
 } from "../style";
 
 const Login = () => {
+	const {setToken} = useContext(AuthContext);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [emailError, setEmailError] = useState<string>("");
 	const login = () => {
 		if (isEmailValid(email) && password) {
-			fetch("/api/v1/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					email,
-					password
-				})
+		fetch("http:/localhost:5000/api/v1/login", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				email: email,
+				password: password
 			})
-				.then((res) => res.json())
-				.then((data) => {
-					console.log(data);
-				}).catch(() => {
-				setEmailError("Неправильный логин или пароль");
-				setPassword("");
-			})
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setToken(data.token);
+			}).catch(() => {
+			setEmailError("Неправильный логин или пароль");
+			setPassword("");
+		})
 		}
 	}
 
