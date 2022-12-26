@@ -5,11 +5,13 @@ services:
 
   server:
     build: .
-    command: ./
+    command: java -jar /app.jar
     restart: always
     container_name: account_server
+    env_file:
+      - ./config/prod.db.env
     ports:
-      - 9001:9001
+      - 8080:8080
       - 50051:50051
     networks:
       - gateway_network
@@ -18,7 +20,7 @@ services:
       - db
   
   db:
-    image: postgres:14
+    image: postgres:15
     restart: always
     container_name: account_db
     env_file:
@@ -31,7 +33,7 @@ services:
       - server_db
 
 volumes:
-  data
+  data:
 
 networks:
   gateway_network:

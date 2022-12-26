@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthRestController{
 
     private PasswordEncoder passwordEncoder(){
@@ -44,18 +45,18 @@ public class AuthRestController{
     @PostMapping("/api/v1/login")
     public ResponseEntity<?> authenticate(@RequestBody AuthRequest authRequest){
 
-        User user = userRepository.findByEmail(authRequest.getUsername())
+        User user = userRepository.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User doesnt exist"));
         String token = "";
         try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-            token = jwtTokenProvider.creatToken(authRequest.getUsername(), user.getRoles().name());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+            token = jwtTokenProvider.creatToken(authRequest.getEmail(), user.getRoles().name());
             Map<Object, Object> response = new HashMap<>();
-            response.put("username", authRequest.getUsername());
+            response.put("username", authRequest.getEmail());
             response.put("token", token);
             return ResponseEntity.ok(response);
         }catch (AuthenticationException exc){
-            return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Invalid email/password combination", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -67,6 +68,8 @@ public class AuthRestController{
 
     @PostMapping("/api/v1/registration")
     public ResponseEntity signUp(@RequestBody SUPRequest supRequest){
+
+        String token = "";
         if(!userRepository.findByEmail(supRequest.getEmail()).isEmpty()){
             return new ResponseEntity("User already exist", HttpStatus.FORBIDDEN);
         }else {
@@ -76,9 +79,12 @@ public class AuthRestController{
             user.setPassword(passwordEncoder().encode(supRequest.getPassword()));
             user.setRoles(Roles.USER);
             user.setStatus(Status.ACTIVE);
+            token = jwtTokenProvider.creatToken(user.getEmail(), user.getRoles().name());
+            Map<Object, Object> response = new HashMap<>();
+            response.put("email", user.getEmail());
+            response.put("token", token);
             this.userRepository.save(user);
-            return new ResponseEntity(HttpStatus.CREATED);
+            return ResponseEntity.ok(response);
         }
     }
-
 }

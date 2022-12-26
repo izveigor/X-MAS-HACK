@@ -5,8 +5,6 @@ import (
 	"log"
 
 	"github.com/izveigor/X-MAS-HACK/pkg/db"
-	"github.com/izveigor/X-MAS-HACK/pkg/handlers/websockets"
-	rabbitmq "github.com/wagslane/go-rabbitmq"
 )
 
 type ReceivedData struct {
@@ -17,12 +15,42 @@ type ReceivedData struct {
 }
 
 func StartConsumer() {
-	consumer, err := rabbitmq.NewConsumer(
-		RabbitMQBroker.Conn,
-		func(delivery rabbitmq.Delivery) rabbitmq.Action {
+	ch, err := RabbitMQBroker.Conn.Channel()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer func() {
+		_ = ch.Close()
+	}()
+
+	q, err := ch.QueueDeclare(
+		"MA",
+		false,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	messages, err := ch.Consume(
+		q.Name,
+		"document",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+	go func() {
+		for message := range messages {
 			var receivedData *ReceivedData
-			json.Unmarshal(delivery.Body, &receivedData)
-			document, err := db.UpdateDocument(
+			json.Unmarshal(message.Body, &receivedData)
+			_, err := db.UpdateDocument(
 				receivedData.Id,
 				receivedData.Types,
 				receivedData.Scores,
@@ -30,22 +58,7 @@ func StartConsumer() {
 			)
 			if err != nil {
 				log.Fatal(err)
-				return rabbitmq.Ack
 			}
-			client := websockets.WebsocketHub.FindClient(document.Uuid)
-			if client != nil {
-				client.SendDocumentInformation(document)
-			}
-			return rabbitmq.Ack
-		},
-		"ML",
-		rabbitmq.WithConsumerOptionsRoutingKey("MA"),
-		rabbitmq.WithConsumerOptionsExchangeName("document"),
-		rabbitmq.WithConsumerOptionsExchangeDeclare,
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	RabbitMQBroker.Consumer = consumer
+		}
+	}()
 }

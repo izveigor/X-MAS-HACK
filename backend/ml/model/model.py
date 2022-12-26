@@ -1,39 +1,46 @@
 import pickle
-from features.constants import MODEL_PATH, TYPES
-from nltk.stem import WordNetLemmatizer
-from features.singleton import Singleton
-from sklearn.feature_extraction.text import TfidfVectorizer
-from nltk.corpus import stopwords
-from collections import Counter
 import re
-import tika
-from tika import parser
-from broker.publisher import SentData, Publisher
+from collections import Counter
 
+import tika
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from scipy.sparse._csr import csr_matrix
+from sklearn.feature_extraction.text import TfidfVectorizer
+from tika import parser
+
+from broker.publisher import Publisher, SentData
+from features.constants import MODEL_PATH, TYPES, VECTORIZER_PATH
+from features.singleton import Singleton
 
 lemmatizer = WordNetLemmatizer()
-stop_words = set(stopwords.words('russian'))
+stop_words = set(stopwords.words("russian"))
 vectorizer = TfidfVectorizer()
 
 
-class Model(metaclass=Singleton):
-    def __init__(self):
-        with open(MODEL_PATH, 'rb') as file:
+class DocumentModel(metaclass=Singleton):
+    def __init__(self) -> None:
+        with open(MODEL_PATH, "rb") as file:
             self.model = pickle.load(file)
 
-    def _read_document(file):
-        parsed = parser.from_file(file)
-        content = parsed["content"]
+        with open(VECTORIZER_PATH, "rb") as file:
+            self.vectorizer = pickle.load(file)
+
+    @staticmethod
+    def _read_document(file: bytes) -> str:
+        parsed = parser.from_buffer(file)
+        content: str = parsed["content"]
         return content
 
-    def _cleaning(doc):
+    @staticmethod
+    def _cleaning(doc: str) -> list[str]:
         text = ""
         for word in doc:
-            token = re.sub("[^А-Яа-я\n ']+", '', str(word)).lower()
+            token = re.sub("[^А-Яа-я\n ']+", "", str(word)).lower()
             if token:
                 token = re.sub("\n", " ", token)
                 text += token
-        text = ' '.join(text.split())
+        text = " ".join(text.split())
 
         cleaned_field = []
         for word in text.split():
@@ -43,20 +50,26 @@ class Model(metaclass=Singleton):
 
         return cleaned_field
 
-    def _vectorize(self, doc):
-        text = self._cleaning(doc)
-        key_phrases = list(Counter(text.split()).most_common())[:5]
-        vectors = vectorizer.transform([" ".join(text)])
+    def _vectorize(self, cleaned_text: list[str]) -> tuple[csr_matrix, list[str]]:
+        key_phrases = [word[0] for word in list(Counter(cleaned_text).most_common())[:5]]
+        vectors = self.vectorizer.transform([" ".join(cleaned_text)])
         return vectors, key_phrases
 
-    def predict(self, id_, document):
+    def predict(self, id_: str, document: bytes) -> None:
         content = self._read_document(document)
         cleaned_text = self._cleaning(content)
         vectors, key_phrases = self._vectorize(cleaned_text)
         y_pred_proba = self.model.predict_proba(vectors)
-        Publisher.publish(SentData(
-            id=id_,
-            scores=[score for score in y_pred_proba[0]],
-            types=TYPES,
-            key_phrases=key_phrases,
-        ))
+
+        y_pred_array = []
+        for string in y_pred_proba:
+            y_pred_array.append(string[0][1])
+
+        Publisher().publish(
+            SentData(
+                id=id_,
+                scores=y_pred_array,
+                types=TYPES,
+                key_phrases=key_phrases,
+            )
+        )

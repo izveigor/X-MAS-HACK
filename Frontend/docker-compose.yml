@@ -3,7 +3,9 @@ version: '3'
 services:
 
   frontend:
-    build: .
+    build:
+      dockerfile: Dockerfile
+      context: ./X-MAS-FRONT
     command: serve -s build
     restart: always
     container_name: frontend_client

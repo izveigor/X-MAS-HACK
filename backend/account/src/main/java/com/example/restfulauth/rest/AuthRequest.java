@@ -5,10 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class SUPRequest {
+public class AuthRequest {
 
-    private String name;
     private String email;
     private String password;
-
 }

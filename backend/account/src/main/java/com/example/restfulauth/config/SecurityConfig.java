@@ -11,12 +11,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebMvc
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final JwtConfig jwtConfig;
 
@@ -29,11 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .csrf().disable()
+                .cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers( "/").permitAll()
-                .antMatchers( "/api/v1/login", "/api/v1/logout", "/api/v1/registration").permitAll()
+                .antMatchers( "/login", "/logout", "/registration", "/api/v1/login", "/api/v1/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(jwtConfig);
