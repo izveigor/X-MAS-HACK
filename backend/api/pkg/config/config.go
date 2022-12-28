@@ -18,6 +18,7 @@ type ConfigType struct {
 
 func LoadConfig() (c *ConfigType) {
 	if !strings.HasSuffix(os.Args[0], ".test") {
+		viper.SetConfigName("prod")
 		viper.AddConfigPath("./pkg/config/envs")
 	} else {
 		if !strings.HasSuffix(os.Args[0], "db.test") {
@@ -25,9 +26,9 @@ func LoadConfig() (c *ConfigType) {
 		} else {
 			viper.AddConfigPath("../config/envs")
 		}
+		viper.SetConfigName("test")
 	}
 
-	viper.SetConfigName("prod")
 	viper.SetConfigType("env")
 
 	viper.AutomaticEnv()

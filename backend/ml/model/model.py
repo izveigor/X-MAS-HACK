@@ -2,7 +2,6 @@ import pickle
 import re
 from collections import Counter
 
-import tika
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from scipy.sparse._csr import csr_matrix
@@ -10,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from tika import parser
 
 from broker.publisher import Publisher, SentData
-from features.constants import MODEL_PATH, TYPES, VECTORIZER_PATH
+from features.constants import MODEL_PATH, TIKA_URL, TYPES, VECTORIZER_PATH
 from features.singleton import Singleton
 
 lemmatizer = WordNetLemmatizer()
@@ -28,7 +27,7 @@ class DocumentModel(metaclass=Singleton):
 
     @staticmethod
     def _read_document(file: bytes) -> str:
-        parsed = parser.from_buffer(file, 'http://tika:9998/tika')
+        parsed = parser.from_buffer(file, TIKA_URL)
         content: str = parsed["content"]
         return content
 

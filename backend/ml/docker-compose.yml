@@ -10,6 +10,7 @@ services:
     command: python3 main.py
     env_file:
       - ./config/prod.rabbitmq.env
+      - ./config/prod.env
     networks:
       - raggitmq_network
       - tika_network

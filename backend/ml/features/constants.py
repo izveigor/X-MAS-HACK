@@ -1,5 +1,5 @@
 import os
-from typing import Any
+from typing import Any, Optional
 
 BROKER_SETTINGS: dict[str, Any] = {
     "RABBITMQ_USERNAME": os.environ.get("RABBITMQ_USERNAME"),
@@ -8,6 +8,7 @@ BROKER_SETTINGS: dict[str, Any] = {
     "RABBITMQ_PORT": os.environ.get("RABBITMQ_PORT"),
 }
 
+TIKA_URL: Optional[str] = os.environ.get("TIKA_URL")
 ID_SIZE: int = 24
 
 MODEL_PATH: str = "./model/model.pkl"
