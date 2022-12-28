@@ -59,5 +59,17 @@ func (d *Documents) CreateDocument(rw http.ResponseWriter, r *http.Request) {
 
 	rw.Header().Set("Content-Type", "application/json")
 	rw.WriteHeader(http.StatusOK)
-	json.NewEncoder(rw).Encode(documents)
+
+	var sentDocuments []JSONDocument
+	for i := 0; i < len(documents); i++ {
+		sentDocuments = append(sentDocuments, JSONDocument{
+			KeyPhrases: documents[i].KeyPhrases,
+			Name:       documents[i].Name,
+			Date:       documents[i].Date.Format("2006/01/02 15:04"),
+			Status:     documents[i].Status,
+			Types:      documents[i].Types,
+			Scores:     documents[i].Scores,
+		})
+	}
+	json.NewEncoder(rw).Encode(sentDocuments)
 }

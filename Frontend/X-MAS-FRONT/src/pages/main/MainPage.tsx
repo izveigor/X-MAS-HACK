@@ -33,7 +33,7 @@ const MainPage = () => {
 		} as ICard;
 
 	const getDocuments = () => {
-		fetch('http://localhost:9000/api/documents?page=' + currentPage, {
+		fetch('http://localhost:1337/api/documents?page=' + currentPage, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ const MainPage = () => {
 						                                      status={testCards.status} types={testCards.types}
 						                                      score={testCards.score} keyWords={testCards.keyWords}/>)
 					} */}
-					{cards ? cards.map((card, index) => <TableRow key={index} name={card.name} date={card.date}
+					{cards ? cards.map((card, index) => <TableRow key={index} name={card.name} date={card.time}
 											                                              status={card.status} types={card.types}
 											                                              scores={card.scores} key_phrases={card.key_phrases}/>) : <p>Нет документов</p>}
 					

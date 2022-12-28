@@ -3,8 +3,6 @@ package documents
 import (
 	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -20,6 +18,7 @@ import (
 func TestPost(t *testing.T) {
 	go db.ConnectToMongo()
 	broker.ConnectToBroker()
+	broker.StartPublisher()
 	text := []byte("Текст...")
 
 	ch, err := broker.RabbitMQBroker.Conn.Channel()
@@ -32,7 +31,7 @@ func TestPost(t *testing.T) {
 	}()
 
 	q, err := ch.QueueDeclare(
-		"MA",
+		"AM",
 		false,
 		false,
 		false,
@@ -53,12 +52,6 @@ func TestPost(t *testing.T) {
 		nil,
 	)
 
-	go func() {
-		for message := range messages {
-			log.Print("Message:", message)
-		}
-	}()
-
 	defer func() {
 		db.DocumentsCollection.Drop(context.TODO())
 	}()
@@ -69,7 +62,6 @@ func TestPost(t *testing.T) {
 	part.Write(text)
 	writer.Close()
 
-	fmt.Println(body)
 	wr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodPost, "/documents", body)
 	ctx := context.WithValue(req.Context(), KeyUUID{}, UUID{Value: "123"})
@@ -81,17 +73,17 @@ func TestPost(t *testing.T) {
 	documentsHandler.CreateDocument(wr, req)
 	assert.Equal(t, wr.Code, http.StatusOK)
 
-	var result []*db.Document
-	if err := json.Unmarshal([]byte(wr.Body.String()), &result); err != nil {
-		t.Fatal(err)
-	}
-
 	documents, err := db.FindDocuments(1, "123")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, documents[0].Uuid, "123")
-	assert.Equal(t, documents[0].Name, "file.txt")
-	assert.Equal(t, documents[0].Status, "Анализ")
+	go func() {
+		for message := range messages {
+			var id string = string(message.Body[:24])
+			var file []byte = message.Body[24:]
+			assert.Equal(t, id, documents[0].Id.Hex())
+			assert.Equal(t, file, text)
+		}
+	}()
 }

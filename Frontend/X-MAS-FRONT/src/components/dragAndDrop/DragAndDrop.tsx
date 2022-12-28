@@ -23,7 +23,7 @@ export const DragAndDrop = (props: IProps) => {
 		files.forEach((file) => {
 			formData.append('files', file);
 		});
-		fetch('http://localhost:9000/api/documents', {
+		fetch('http://localhost:1337/api/documents', {
 			method: 'POST',
 			headers: {
 				'Authorization': "Token " + token,

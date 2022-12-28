@@ -13,6 +13,7 @@ services:
     networks:
       - gateway_network
       - raggitmq_network
+      - mongo_network
     depends_on:
       - mongo
   
@@ -21,8 +22,8 @@ services:
     container_name: api_mongo
     ports:
       - 27017:27017
-    env_file:
-      - ./pkg/config/envs/prod.mongo.env
+    networks:
+      - mongo_network
 
 
 networks:
@@ -30,3 +31,4 @@ networks:
     external: true
   raggitmq_network:
     external: true
+  mongo_network:

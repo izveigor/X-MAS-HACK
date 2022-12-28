@@ -20,7 +20,6 @@ WORKDIR $APP_HOME
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --no-cache /wheels/*
+RUN python -m nltk.downloader stopwords wordnet
 
 COPY . $APP_HOME
-
-RUN make proto

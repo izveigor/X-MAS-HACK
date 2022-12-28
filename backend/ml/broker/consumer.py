@@ -47,11 +47,9 @@ class Consumer(metaclass=Singleton):
 
     def start(self) -> None:
         """Начинаем поток для чтения сообщений из очереди"""
-        self._thread = threading.Thread(target=self._channel.start_consuming)
-        self._thread.start()
+        self._channel.start_consuming()
 
     def _callback(self, channel: Any, method: Any, properties: Any, body: bytes) -> None:
         """Читаем наше сообщение, а затем предсказываем, спам ли это или нет"""
         id_, file = body[:ID_SIZE].decode("utf-8"), body[ID_SIZE:]
-        print(id_, file)
         DocumentModel().predict(id_, file)

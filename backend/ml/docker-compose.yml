@@ -12,8 +12,19 @@ services:
       - ./config/prod.rabbitmq.env
     networks:
       - raggitmq_network
+      - tika_network
+  
+  tika:
+    image: apache/tika:2.5.0
+    restart: always
+    ports:
+      - 9998:9998
+    container_name: tika_server
+    networks:
+      - tika_network
 
 
 networks:
   raggitmq_network:
     external: true
+  tika_network:

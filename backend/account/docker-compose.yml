@@ -4,7 +4,9 @@ version: '3'
 services:
 
   server:
-    build: .
+    build:
+      dockerfile: Dockerfile
+      context: ./authentication
     command: java -jar /app.jar
     restart: always
     container_name: account_server
@@ -12,13 +14,28 @@ services:
       - ./config/prod.db.env
     ports:
       - 8080:8080
-      - 50051:50051
     networks:
       - gateway_network
       - server_db
     depends_on:
       - db
-  
+    
+  grpc:
+    build:
+      dockerfile: Dockerfile
+      context: ./grpc_server
+    command: python server.py
+    restart: always
+    container_name: grpc_server
+    ports:
+      - 50051:50051
+    networks:
+      - gateway_network
+      - server_db
+    depends_on:
+      - server
+      - db
+
   db:
     image: postgres:15
     restart: always

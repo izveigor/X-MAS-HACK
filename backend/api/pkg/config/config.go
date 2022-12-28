@@ -20,7 +20,11 @@ func LoadConfig() (c *ConfigType) {
 	if !strings.HasSuffix(os.Args[0], ".test") {
 		viper.AddConfigPath("./pkg/config/envs")
 	} else {
-		viper.AddConfigPath("../../config/envs")
+		if !strings.HasSuffix(os.Args[0], "db.test") {
+			viper.AddConfigPath("../../config/envs")
+		} else {
+			viper.AddConfigPath("../config/envs")
+		}
 	}
 
 	viper.SetConfigName("prod")

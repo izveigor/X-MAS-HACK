@@ -3,7 +3,6 @@ import expend from '../../../../assets/images/expend.svg';
 import RoundSelection from "../../../../components/roundSelection/RoundSelection";
 import {ICard} from "../../../../service/interfaces/ICard";
 import cutFileName from "../../../../service/scripts/cutFileName";
-import normalizeDate from "../../../../service/scripts/normalizeDate";
 import Status from "../status/Status";
 import {
 	InfoText,
@@ -42,7 +41,7 @@ const TableRow = (props: ICard) => {
 	return (
 		<TableLine>
 			<TableItem><InfoText>Название:</InfoText><p>{cutFileName(name)}</p></TableItem>
-			<TableItem><InfoText>Дата:</InfoText><p>{normalizeDate(normalizeDate(date))}</p></TableItem>
+			<TableItem><InfoText>Дата:</InfoText><p>{date}</p></TableItem>
 			<TableItem><InfoText>Статус:</InfoText><Status status={status}/></TableItem>
 			<TableItem><InfoText>Тип документа:</InfoText><p>{types[0] || '-'}</p></TableItem>
 			<TableItem><InfoText>Точность:</InfoText><p>{maxAccuracy}</p></TableItem>

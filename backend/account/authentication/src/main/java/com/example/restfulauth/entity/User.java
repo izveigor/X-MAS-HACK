@@ -24,6 +24,8 @@ public class User {
     private UUID id;
     @Column(name="name")
     private String name;
+    @Column(name="token")
+    private String token;
     @Column(name="password")
     private String password;
     @Column(name="email")

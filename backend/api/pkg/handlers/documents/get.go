@@ -48,7 +48,7 @@ func (d *Documents) GetDocuments(rw http.ResponseWriter, r *http.Request) {
 		sentDocuments = append(sentDocuments, JSONDocument{
 			KeyPhrases: document.KeyPhrases,
 			Name:       document.Name,
-			Date:       document.Date.Format("2006-01-02 15:04:05"),
+			Date:       document.Date.Format("2006/01/02 15:04"),
 			Status:     document.Status,
 			Types:      document.Types,
 			Scores:     document.Scores,

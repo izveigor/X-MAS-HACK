@@ -28,7 +28,7 @@ class DocumentModel(metaclass=Singleton):
 
     @staticmethod
     def _read_document(file: bytes) -> str:
-        parsed = parser.from_buffer(file)
+        parsed = parser.from_buffer(file, 'http://tika:9998/tika')
         content: str = parsed["content"]
         return content
 

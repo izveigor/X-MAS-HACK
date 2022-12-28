@@ -61,14 +61,15 @@ func TestGet(t *testing.T) {
 	documentsHandler.GetDocuments(wr, req)
 	assert.Equal(t, wr.Code, http.StatusOK)
 
-	var result []*db.Document
+	var result []*JSONDocument
 	if err := json.Unmarshal([]byte(wr.Body.String()), &result); err != nil {
 		t.Fatal(err)
 	}
 
+	assert.Equal(t, len(result), 1)
 	assert.Equal(t, result[0].KeyPhrases, firstDocument.KeyPhrases)
 	assert.Equal(t, result[0].Name, firstDocument.Name)
-	assert.Equal(t, result[0].Date, firstDocument.Date)
+	assert.Equal(t, result[0].Date, "2009-11-10 23:00:30")
 	assert.Equal(t, result[0].Status, firstDocument.Status)
 	assert.Equal(t, result[0].Types, firstDocument.Types)
 	assert.Equal(t, result[0].Scores, firstDocument.Scores)

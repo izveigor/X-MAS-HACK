@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var (
@@ -16,7 +17,10 @@ func FindDocuments(page int, uuid string) ([]*Document, error) {
 	defer cancel()
 	var documents []*Document
 
-	cursor, err := DocumentsCollection.Find(ctx, bson.D{{"_uuid", uuid}})
+	findOptions := options.Find()
+	findOptions.SetSort(bson.D{{"time", -1}})
+
+	cursor, err := DocumentsCollection.Find(ctx, bson.D{{"_uuid", uuid}}, findOptions)
 	if err != nil {
 		return nil, err
 	}

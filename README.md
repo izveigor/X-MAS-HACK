@@ -1,6 +1,12 @@
 # X-MAS-HACK ![Api-tests](https://github.com/izveigor/X-MAS-HACK/actions/workflows/api-tests.yml/badge.svg) ![ML-tests](https://github.com/izveigor/X-MAS-HACK/actions/workflows/ml-tests.yml/badge.svg)
 Решение команды MISIS - Apollo на хакатоне X-MAS-HACK-2022
-![Дизайн](https://user-images.githubusercontent.com/68601180/208240779-afbd1d41-2381-4843-8c1b-9786d34df8fc.png)
+![main](https://user-images.githubusercontent.com/68601180/209818356-babdd64b-805d-4a6e-8388-bf8826f46836.png)
+![register](https://user-images.githubusercontent.com/68601180/209818361-80a92b55-bfe7-4da6-90ed-e1e82eae5516.png)
+# Запуск
+Чтобы запустить все микросервисы и frontend, файл "entrypoint.sh" использует контейнеры "Docker".
+```
+$ ./entrypoint.sh
+```
 # Архитектура
 ![Архитектура](https://user-images.githubusercontent.com/68601180/208241428-10ef568d-acf5-4c4d-8a17-7ff1b5d608f0.JPG)
 

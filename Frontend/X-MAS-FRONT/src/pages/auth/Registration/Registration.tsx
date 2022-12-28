@@ -22,7 +22,7 @@ const Registration = () => {
 	const [emailError, setEmailError] = React.useState<string>('');
 	const registration = () => {
 		if (isEmailValid(email) && password && username) {
-			fetch("http://localhost:8080/api/v1/registration", {
+			fetch("http://localhost:1337/api/v1/registration", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

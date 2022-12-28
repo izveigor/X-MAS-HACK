@@ -9,7 +9,7 @@ services:
     ports:
       - 1337:80
     networks:
-      - gateway_nginx
+      - gateway_network
 
 
 networks:
