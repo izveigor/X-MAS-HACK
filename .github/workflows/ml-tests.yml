@@ -11,6 +11,11 @@ defaults:
 
 jobs:
   ml-tests:
+    tika:
+      image: apache/tika:2.5.0
+      ports:
+        - 9998:9998
+
     runs-on: [ubuntu-latest]
 
     steps:
