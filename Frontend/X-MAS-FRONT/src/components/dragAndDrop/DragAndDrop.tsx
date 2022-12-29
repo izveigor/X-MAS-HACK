@@ -30,10 +30,16 @@ export const DragAndDrop = (props: IProps) => {
 				//'Content-Type': 'multipart/form-data',
 			},
 			body: formData,
-		})
-			.then(response => response.json())
-			.then(data => console.log(data))
-			.catch(logout)
+		}).then(response => {
+				if (response.status === 401) {
+					return logout();
+				} else {
+					return response.json();
+				}
+			})
+			.catch(() => {
+				console.log("fetch err")
+			})
 			.finally(() => updateDocument()).then(() => setFiles([]))
 	}
 	const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -74,7 +80,6 @@ export const DragAndDrop = (props: IProps) => {
 	}
 	const handleFiles = (files: FileList) => {
 		for (let i = 0; i < files.length; i++) {
-			console.log(files[i]);
 			if (isPdfOrDocOrDocx(files[i])) {
 				setFiles([...files]);
 			}

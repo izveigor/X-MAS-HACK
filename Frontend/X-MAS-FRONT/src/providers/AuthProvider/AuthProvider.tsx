@@ -34,7 +34,6 @@ const AuthProvider = ({children}: any) => {
 		if (token) {
 			localStorage.setItem('token', token);
 			navigate("/");
-			console.log("redirect to /");
 		}
 		else {
 			localStorage.removeItem('token');
@@ -51,7 +50,6 @@ const AuthProvider = ({children}: any) => {
 		, [])
 
 	const logout = () => {
-		console.log('logout')
 		setToken(null);
 		setUsername(null);
 		navigate('/login');

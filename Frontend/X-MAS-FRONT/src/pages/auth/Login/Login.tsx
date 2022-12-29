@@ -63,7 +63,7 @@ const Login = () => {
 				<Input title={'Почта'} value={email} handleChange={handleEmailChange} error={emailError}/>
 				<Input title={'Пароль'} value={password} type={'password'} handleChange={handlePasswordChange}/>
 				<Button type={"button"} onClick={login} main={true}>Войти</Button>
-				<p>Нет аккаунта? <Accent><Link to={'/registration'}>Зарегестироваться</Link></Accent></p>
+				<p>Нет аккаунта? <Accent><Link to={'/registration'}>Зарегистрироваться</Link></Accent></p>
 			</Form>
 		</FormWrapper>
 	)

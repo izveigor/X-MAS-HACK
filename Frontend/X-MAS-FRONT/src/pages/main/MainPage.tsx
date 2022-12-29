@@ -22,15 +22,6 @@ const MainPage = () => {
 	const {token, logout} = React.useContext(AuthContext);
 	const [cards, setCards] = React.useState<ICard[] | null>(null);
 	const [currentPage, setCurrentPage] = React.useState(1);
-	const testCards =
-		{
-			key_phrases: ['Купля-продажа', 'Нам приятно, что вам интересна работа в нашей команде.', 'Договор аренды'],
-			name: "afgeggrsg.docx",
-			date: "2021-03-12T12:00:00",
-			status: "wait",
-			types: ['Купля-продажа', 'Поставка', 'Договор аренды'],
-			scores: [0.5, 0.1, 0.2],
-		} as ICard;
 
 	const getDocuments = () => {
 		fetch('http://localhost:1337/api/documents?page=' + currentPage, {
@@ -39,13 +30,17 @@ const MainPage = () => {
 				'Content-Type': 'application/json',
 				'Authorization': "Token " + token,
 			},
-		}).then(response => response.json())
+		}).then(response => {
+				if (response.status === 401) {
+					return logout();
+				} else {
+					return response.json();
+				}
+			})
 			.then(data => {
-					console.log(data)
 					setCards(data)
 				}
 			)
-			//.catch(logout)
 			.catch(() => {
 				console.log("fetch err")
 			})
@@ -61,7 +56,6 @@ const MainPage = () => {
 
 	//if not logged in, redirect to login page
 	React.useEffect(() => {
-		console.log('token', token)
 		if (!token) {
 			logout();
 		}
